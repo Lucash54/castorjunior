@@ -3,4 +3,5 @@
   <groupId>fr.ensai</groupId>
   <artifactId>castorjunior</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  #ceci est un test
 </project>
