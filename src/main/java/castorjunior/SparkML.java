@@ -1,70 +1,84 @@
 package castorjunior;
 
-import org.apache.spark.ml.classification.LogisticRegression;
+import java.util.List;
+import com.google.common.collect.Lists;
+import org.apache.spark.SparkConf;
+import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.ml.classification.LogisticRegressionModel;
-import org.apache.spark.sql.DataFrame;
-import org.apache.spark.sql.SQLContext;
+import org.apache.spark.ml.param.ParamMap;
+import org.apache.spark.ml.classification.LogisticRegression;
+import org.apache.spark.mllib.linalg.Vectors;
+import org.apache.spark.mllib.regression.LabeledPoint;
+import org.apache.spark.sql.api.java.JavaSQLContext;
+import org.apache.spark.sql.api.java.JavaSchemaRDD;
+import org.apache.spark.sql.api.java.Row;
 
 public class SparkML {
 	public static void main(String[] args) {
 	
+		SparkConf conf = new SparkConf().setAppName("JavaSimpleParamsExample");
+		JavaSparkContext jsc = new JavaSparkContext(conf);
+		JavaSQLContext jsql = new JavaSQLContext(jsc);
 
-	// Load the data stored in LIBSVM format as a DataFrame.
-	DataFrame data = sqlContext.read().format("libsvm").load("data/mllib/sample_libsvm_data.txt");
+		// Prepare training data.
+		// We use LabeledPoint, which is a case class.  Spark SQL can convert RDDs of case classes
+		// into SchemaRDDs, where it uses the case class metadata to infer the schema.
+		List<LabeledPoint> localTraining = Lists.newArrayList(
+		  new LabeledPoint(1.0, Vectors.dense(0.0, 1.1, 0.1)),
+		  new LabeledPoint(0.0, Vectors.dense(2.0, 1.0, -1.0)),
+		  new LabeledPoint(0.0, Vectors.dense(2.0, 1.3, 1.0)),
+		  new LabeledPoint(1.0, Vectors.dense(0.0, 1.2, -0.5)));
+		JavaSchemaRDD training = jsql.applySchema(jsc.parallelize(localTraining), LabeledPoint.class);
 
-	// Index labels, adding metadata to the label column.
-	// Fit on whole dataset to include all labels in index.
-	StringIndexerModel labelIndexer = new StringIndexer()
-	  .setInputCol("label")
-	  .setOutputCol("indexedLabel")
-	  .fit(data);
+		// Create a LogisticRegression instance.  This instance is an Estimator.
+		LogisticRegression lr = new LogisticRegression();
+		// Print out the parameters, documentation, and any default values.
+		System.out.println("LogisticRegression parameters:\n" + lr.explainParams() + "\n");
 
-	// Automatically identify categorical features, and index them.
-	VectorIndexerModel featureIndexer = new VectorIndexer()
-	  .setInputCol("features")
-	  .setOutputCol("indexedFeatures")
-	  .setMaxCategories(4) // features with > 4 distinct values are treated as continuous
-	  .fit(data);
+		// We may set parameters using setter methods.
+		lr.setMaxIter(10)
+		  .setRegParam(0.01);
 
-	// Split the data into training and test sets (30% held out for testing)
-	DataFrame[] splits = data.randomSplit(new double[]{0.7, 0.3});
-	DataFrame trainingData = splits[0];
-	DataFrame testData = splits[1];
+		// Learn a LogisticRegression model.  This uses the parameters stored in lr.
+		LogisticRegressionModel model1 = lr.fit(training);
+		// Since model1 is a Model (i.e., a Transformer produced by an Estimator),
+		// we can view the parameters it used during fit().
+		// This prints the parameter (name: value) pairs, where names are unique IDs for this
+		// LogisticRegression instance.
+		System.out.println("Model 1 was fit using parameters: " + model1.fittingParamMap());
 
-	// Train a DecisionTree model.
-	DecisionTreeClassifier dt = new DecisionTreeClassifier()
-	  .setLabelCol("indexedLabel")
-	  .setFeaturesCol("indexedFeatures");
+		// We may alternatively specify parameters using a ParamMap.
+		ParamMap paramMap = new ParamMap();
+		paramMap.put(lr.maxIter(), 20); // Specify 1 Param.
+		paramMap.put(lr.maxIter(), 30); // This overwrites the original maxIter.
+		paramMap.put(lr.regParam(), 0.1);
 
-	// Convert indexed labels back to original labels.
-	IndexToString labelConverter = new IndexToString()
-	  .setInputCol("prediction")
-	  .setOutputCol("predictedLabel")
-	  .setLabels(labelIndexer.labels());
+		// One can also combine ParamMaps.
+		ParamMap paramMap2 = new ParamMap();
+		paramMap2.put(lr.scoreCol(), "probability"); // Changes output column name.
+		ParamMap paramMapCombined = paramMap.$plus$plus(paramMap2);
 
-	// Chain indexers and tree in a Pipeline
-	Pipeline pipeline = new Pipeline()
-	  .setStages(new PipelineStage[]{labelIndexer, featureIndexer, dt, labelConverter});
+		// Now learn a new model using the paramMapCombined parameters.
+		// paramMapCombined overrides all parameters set earlier via lr.set* methods.
+		LogisticRegressionModel model2 = lr.fit(training, paramMapCombined);
+		System.out.println("Model 2 was fit using parameters: " + model2.fittingParamMap());
 
-	// Train model.  This also runs the indexers.
-	PipelineModel model = pipeline.fit(trainingData);
+		// Prepare test documents.
+		List<LabeledPoint> localTest = Lists.newArrayList(
+		    new LabeledPoint(1.0, Vectors.dense(-1.0, 1.5, 1.3)),
+		    new LabeledPoint(0.0, Vectors.dense(3.0, 2.0, -0.1)),
+		    new LabeledPoint(1.0, Vectors.dense(0.0, 2.2, -1.5)));
+		JavaSchemaRDD test = jsql.applySchema(jsc.parallelize(localTest), LabeledPoint.class);
 
-	// Make predictions.
-	DataFrame predictions = model.transform(testData);
-
-	// Select example rows to display.
-	predictions.select("predictedLabel", "label", "features").show(5);
-
-	// Select (prediction, true label) and compute test error
-	MulticlassClassificationEvaluator evaluator = new MulticlassClassificationEvaluator()
-	  .setLabelCol("indexedLabel")
-	  .setPredictionCol("prediction")
-	  .setMetricName("precision");
-	double accuracy = evaluator.evaluate(predictions);
-	System.out.println("Test Error = " + (1.0 - accuracy));
-
-	DecisionTreeClassificationModel treeModel =
-	  (DecisionTreeClassificationModel) (model.stages()[2]);
-	System.out.println("Learned classification tree model:\n" + treeModel.toDebugString());
-	}
+		// Make predictions on test documents using the Transformer.transform() method.
+		// LogisticRegression.transform will only use the 'features' column.
+		// Note that model2.transform() outputs a 'probability' column instead of the usual 'score'
+		// column since we renamed the lr.scoreCol parameter previously.
+		model2.transform(test).registerAsTable("results");
+		JavaSchemaRDD results =
+		    jsql.sql("SELECT features, label, probability, prediction FROM results");
+		for (Row r: results.collect()) {
+		  System.out.println("(" + r.get(0) + ", " + r.get(1) + ") -> prob=" + r.get(2)
+		      + ", prediction=" + r.get(3));
+		}
 }
