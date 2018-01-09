@@ -1,4 +1,4 @@
-/*package castorjunior;
+package castorjunior;
 
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
@@ -9,7 +9,7 @@ import weka.core.Instance;
 import weka.core.Instances;
  
 public class Driver {
- 
+	
     public static void main(String[] args) throws Exception{
          
          // Declare two numeric attributes
@@ -72,4 +72,5 @@ public class Driver {
              System.out.println();
          }
     }
-}*/
+  
+}
