@@ -1,5 +1,10 @@
 package castorjunior;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 import javax.script.*;
 import org.renjin.script.*;
 
@@ -13,8 +18,27 @@ public class Rengine {
 	    // create a Renjin engine:
 	    ScriptEngine engine = factory.getScriptEngine();
 
-	    System.out.print(engine.eval("2+2"));
 	    
+	    try{
+	    	/* on crée d'abord un lecteur de fichier r pour lire le fichier ligne à ligne */
+	    	
+	    	InputStream flux=new FileInputStream("src/script.R"); 
+	    	InputStreamReader lecture=new InputStreamReader(flux);
+	    	BufferedReader buff=new BufferedReader(lecture);
+	    	String ligne;
+	    	
+	    	/* tant que le fichier n'est pas entièrement lu, càd qu'on arrive pas à la dernière ligne */
+	    	
+	    	while ((ligne=buff.readLine())!=null){
+	    		System.out.println(engine.eval(ligne));
+	    	}
+	    	buff.close(); 
+    	}		
+	    
+    	catch (Exception e){
+    		System.out.println(e.toString());
+    	}
+
 	  }
 
 }
