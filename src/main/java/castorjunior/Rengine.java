@@ -31,6 +31,7 @@ public class Rengine {
 	    	
 	    	while ((ligne=buff.readLine())!=null){
 	    		System.out.println(engine.eval(ligne));
+	    		/* on évalue le code R associé à la ligne lue */
 	    	}
 	    	buff.close(); 
     	}		
