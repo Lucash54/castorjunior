@@ -12,7 +12,8 @@ public class CSV2Arff {
    * - CSV input file
    * - ARFF output file
    */
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] ags) throws Exception {
+	String [] args = {"/home/billbokay/Documents/iris.csv","/home/billbokay/Documents/iris2.arff"}; 
     if (args.length != 2) {
       System.out.println("\nUsage: CSV2Arff <input.csv> <output.arff>\n");
       System.exit(1);
