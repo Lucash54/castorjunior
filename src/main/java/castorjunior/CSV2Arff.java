@@ -30,5 +30,6 @@ public class CSV2Arff {
     saver.setFile(new File(args[1]));
     saver.setDestination(new File(args[1]));
     saver.writeBatch();
+    System.out.println("qsd");
   }
 }
