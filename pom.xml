@@ -32,7 +32,6 @@
     <version>1.5.0</version>
 </dependency>
 <dependency>
-<<<<<<< HEAD
 			<!-- Apache Spark main library -->
 			<groupId>org.apache.spark</groupId>
 			<artifactId>spark-core_2.11</artifactId>
@@ -59,8 +58,6 @@
 			<version>5.1.6</version>
 		</dependency>
 <dependency>
-=======
->>>>>>> branch 'master' of https://github.com/Lucash54/castorjunior
     <groupId>org.apache.spark</groupId>
     <artifactId>spark-sql_2.10</artifactId>
     <version>1.2.2</version>
@@ -75,6 +72,24 @@
     <artifactId>tree</artifactId>
     <version>1.0-37-b57</version>
   </dependency>
+  
+  <dependency>
+        <groupId>org.apache.spark</groupId>
+        <artifactId>spark-core_2.10</artifactId>
+        <version>1.6.2</version>
+        <scope>provided</scope>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.apache.spark/spark-sql_2.10 -->
+    <dependency>
+        <groupId>org.apache.spark</groupId>
+        <artifactId>spark-sql_2.10</artifactId>
+        <version>1.6.2</version>
+        <scope>provided</scope>
+    </dependency>
+  
+  
+  
+  
 </dependencies>
 <repositories>
   <repository>
