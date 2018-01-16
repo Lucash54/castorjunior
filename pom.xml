@@ -65,14 +65,13 @@
   <dependency>
     <groupId>org.renjin</groupId>
     <artifactId>renjin-script-engine</artifactId>
-    <version>0.7.0-RC7</version>
+    <version>RELEASE</version>
   </dependency>
-     <dependency>
+  <dependency>
     <groupId>org.renjin.cran</groupId>
-    <artifactId>tree</artifactId>
-    <version>1.0-37-b57</version>
+    <artifactId>randomForest</artifactId>
+    <version>RELEASE</version>
   </dependency>
-  
   <dependency>
         <groupId>org.apache.spark</groupId>
         <artifactId>spark-core_2.10</artifactId>
