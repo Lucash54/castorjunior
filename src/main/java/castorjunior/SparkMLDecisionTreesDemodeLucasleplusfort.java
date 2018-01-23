@@ -36,7 +36,7 @@ import castorjunior.ExerciseUtils;
 import castorjunior.SparkConnection;
 import org.apache.spark.api.java.JavaRDD;
 
-public class SparkMLDecisionTreesDemo { 
+public class SparkMLDecisionTreesDemodeLucasleplusfort { 
 
 
 	public static void main(String[] args) {
