@@ -1,27 +1,17 @@
 package castorjunior;
 
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.Function;
-import org.apache.spark.broadcast.Broadcast;
 import org.apache.spark.ml.classification.DecisionTreeClassificationModel;
 import org.apache.spark.ml.classification.DecisionTreeClassifier;
 import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator;
-import org.apache.spark.ml.evaluation.RegressionEvaluator;
 import org.apache.spark.ml.feature.IndexToString;
 import org.apache.spark.ml.feature.LabeledPoint;
 import org.apache.spark.ml.feature.StringIndexer;
 import org.apache.spark.ml.feature.StringIndexerModel;
 import org.apache.spark.ml.linalg.Vectors;
-import org.apache.spark.ml.regression.LinearRegression;
-import org.apache.spark.ml.regression.LinearRegressionModel;
-import org.apache.spark.ml.regression.LinearRegressionTrainingSummary;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.RowFactory;
@@ -31,7 +21,6 @@ import org.apache.spark.sql.types.StructField;
 import org.apache.spark.sql.types.StructType;
 import static org.apache.spark.sql.functions.*;
 
-import castorjunior.ExerciseUtils;
 import castorjunior.SparkConnection;
 import org.apache.spark.api.java.JavaRDD;
 
@@ -193,8 +182,6 @@ public class SparkMLDecisionTreesDemo {
 				double accuracy = evaluator.evaluate(predictions);
 				System.out.println("Accuracy = " + Math.round( accuracy * 100) + " %" );
 				
-		// Keep the program running so we can checkout things.
-		ExerciseUtils.hold();
 	}
 
 	

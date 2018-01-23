@@ -30,7 +30,6 @@ import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.StructField;
 import org.apache.spark.sql.types.StructType;
 import static org.apache.spark.sql.functions.*;
-import org.apache.spark.sql.DataFrame;
 
 import castorjunior.ExerciseUtils;
 import castorjunior.SparkConnection;

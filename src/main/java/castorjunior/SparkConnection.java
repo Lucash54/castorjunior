@@ -4,10 +4,7 @@
 package castorjunior;
 
 import org.apache.spark.api.java.JavaSparkContext;
-import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.sql.SparkSession ;
-
-import java.util.List;
 
 import org.apache.spark.SparkConf;
 
