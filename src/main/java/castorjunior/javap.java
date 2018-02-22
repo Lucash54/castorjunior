@@ -40,7 +40,7 @@ public class javap {
 	  		
 	  		JavaRDD<String[]> data = data1.map(s ->     s.split(","));
 	  		
-	  		org.apache.spark.ml.feature.LabeledPoint
+	  		//org.apache.spark.ml.feature.LabeledPoint
 	  		
 	  		
 	  		
@@ -53,9 +53,9 @@ public class javap {
 	  		
 	  		//SparkConf sparkConf = new SparkConf().setAppName("DecisionTreeExample");
 	  		
-	  		JavaRDD[] tmp = data1.randomSplit(new double[]{0.6, 0.4});
-	  		JavaRDD trainingData = tmp[0]; // training set
-	  		JavaRDD testData = tmp[1]; // test set
+	  		//JavaRDD[] tmp = data1.randomSplit(new double[]{0.6, 0.4});
+	  		//JavaRDD trainingData = tmp[0]; // training set
+	  		//JavaRDD testData = tmp[1]; // test set
 	  		
 	  		int numClasses = 3;
 	  		Map<Integer, Integer> categoricalFeaturesInfo = new HashMap<>();
@@ -64,8 +64,8 @@ public class javap {
 	  		int maxBins = 32;
 	  		
 	  		
-	  		DecisionTreeModel model = DecisionTree.trainClassifier(trainingData, numClasses,
-	                  categoricalFeaturesInfo, impurity, maxDepth, maxBins);
+	  		//DecisionTreeModel model = DecisionTree.trainClassifier(trainingData, numClasses,
+	        //          categoricalFeaturesInfo, impurity, maxDepth, maxBins);
 	  		
 	  		
 			/*JavaRDD<String[]> data =   sc.textFile("data/iris.csv").map(s ->     s.split(","));

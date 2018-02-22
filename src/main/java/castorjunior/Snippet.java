@@ -28,11 +28,11 @@ public static void main(String[] args) {
 	  		
 	  		JavaRDD<String[]> data = data1.map(s ->     s.split(","));
 
-	"barais@irisa.fr";
+	//"barais@irisa.fr";
 	
 	
 	// convert every string to doubles
-	  		JavaRDD<Double[]> dbl = data.map (m -> m.map(j->j.toDouble());
+	//  		JavaRDD<Double[]> dbl = data.map (m -> m.map(j->j.toDouble());
 	// Here we create a Dense Vector and LabeledPoint. 0 Dense Vector is a
 	// special kind of Vector than the scala regular Vector. So use Vectors, with an “s”
 	// at the end. The values must be doubles. A Dense Vector cannot handle
@@ -40,9 +40,8 @@ public static void main(String[] args) {
 	//
 	// The LabeledPoint is an object with the label and features. The label
 	// is 0, 1, 2 or gas mileage and the features are the weight, year, etc.
-	  		JavaRDD<LabeledPoint> parsedData = dbl.map (y -> 
-	new LabeledPoint(y(0), Vectors.dense(y(1),y(2),y(3),y(4),y(5),y(6),y(7)))
-	).cache();
+	//  		JavaRDD<LabeledPoint> parsedData = dbl.map (y -> 
+	//new LabeledPoint(y(0), Vectors.dense(y(1),y(2),y(3),y(4),y(5),y(6),y(7))).cache();
 	// numClasses means number of classifications. In this case it is
 	// 0, 1, or 2
 	int numClasses = 3;
@@ -57,9 +56,9 @@ public static void main(String[] args) {
 	int maxDepth = 9;
 	int maxBins = 7;
 	// Now feed the data into the model.
-	DecisionTreeModel model = DecisionTree.trainClassifier(parsedData, numClasses, categoricalFeaturesInfo , impurity, maxDepth, maxBins);
+	//DecisionTreeModel model = DecisionTree.trainClassifier(parsedData, numClasses, categoricalFeaturesInfo , impurity, maxDepth, maxBins);
 	// Print out the results
-	System.out.println("Learned classification tree model:\n" + model.toDebugString());
+	//System.out.println("Learned classification tree model:\n" + model.toDebugString());
 }
 
 }
