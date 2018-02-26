@@ -19,6 +19,14 @@ echo "1 : $nomOrigine <br/>";
 echo "2 : $elementsChemin <br/>";
 echo "3 : $extensionFichier <br/>";
 echo "4 : $repertoireDestination <br/>";
+echo "<br>";
+$col = $_POST['colonne'];
+echo "num de col : $col <br/>";
+$algo1 = $_POST['algo1'];
+$algo2 = $_POST['algo2'];
+$algo3 = $_POST['algo3'];
+echo "algo : $algo1, $algo2, $algo3";
+
 ?>
 </body>
 </html>
