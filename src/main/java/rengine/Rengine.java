@@ -1,4 +1,4 @@
-package castorjunior;
+package rengine;
 
 import java.util.Scanner;
 
