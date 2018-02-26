@@ -62,6 +62,11 @@
 	    <version>RELEASE</version>
   	</dependency>
   	<dependency>
+    <groupId>org.renjin.cran</groupId>
+    <artifactId>e1071</artifactId>
+    <version>RELEASE</version>
+  </dependency>
+  	<dependency>
 	    <groupId>commons-lang</groupId>
 	    <artifactId>commons-lang</artifactId>
 	    <version>RELEASE</version>

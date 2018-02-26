@@ -13,7 +13,7 @@ csv$var <- as.factor(as.character(csv$var))
 "Nombre de lignes du csv: "
 total <- length(csv$var)
 long_app <- floor(total*propApp)
-"Nombre de lignes du test =  arrondi((1-propApp)*total)"
+"Nombre de lignes du test =  (1-propApp)*total"
 long_test <- total-long_app
 "On crée la base d'apprentissage et la base de test (70/30)"
 id_test=sample(seq_len(total), size = long_test)

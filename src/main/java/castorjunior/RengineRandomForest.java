@@ -16,7 +16,7 @@ public class RengineRandomForest {
 		
 		//On crée un scanner, pour que l'utilisateur puisse donner l'adresse du csv, et le nom de la variable explicative
 		
-		Scanner saisieUtilisateur = new Scanner(System.in); 
+		Scanner saisieUtilisateur = new Scanner(System.in);
 		
 		//On crée un scanner, pour que l'utilisateur puisse donner l'adresse du csv,
 		// le nom de la variable explicative
@@ -74,7 +74,7 @@ public class RengineRandomForest {
 	    		// on évalue le code R associé à la ligne lue
 	    	}
 	    	// une fois le code exécuté, on ferme le buffer. Normalement l'accuracy est la dernière ligne affichée
-	    	buff.close(); 
+	    	buff.close();
     	}		
 	    
     	catch (Exception e){
