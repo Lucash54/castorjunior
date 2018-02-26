@@ -11,6 +11,7 @@ import org.apache.spark.ml.feature.IndexToString;
 import org.apache.spark.ml.feature.LabeledPoint;
 import org.apache.spark.ml.feature.StringIndexer;
 import org.apache.spark.ml.feature.StringIndexerModel;
+import org.apache.spark.ml.linalg.Vector;
 import org.apache.spark.ml.linalg.Vectors;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
@@ -19,7 +20,12 @@ import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.StructField;
 import org.apache.spark.sql.types.StructType;
+import org.spark_project.guava.collect.Lists;
+
 import static org.apache.spark.sql.functions.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import castorjunior.SparkConnection;
 import org.apache.spark.api.java.JavaRDD;
@@ -49,39 +55,49 @@ public class SparkMLDecisionTreesDemo {
 		//Convert all data types as double; Change missing values to standard ones.
 		
 		//Create the schema for the data to be loaded into Dataset.
+		String[] header = irisDf.columns();
+		int l= header.length;
+		String[] varsX = new String[l-2];
+		int j=0;
+		for(int i = 1; i < l-1; i++){
+			varsX[j]=header[i];
+			j++;
+		}
+		String varY = header[l-1];
+		StructField[] fields = new StructField[varsX.length+1];
+		int i=0;
+		for (String s : varsX){
+			fields[i]=DataTypes.createStructField(s, DataTypes.DoubleType, false);
+			i++;
+		}
+		fields[i]=DataTypes.createStructField(varY, DataTypes.StringType, false);
 		StructType irisSchema = DataTypes
-				.createStructType(new StructField[] {
-						DataTypes.createStructField("SEPAL_LENGTH", DataTypes.DoubleType, false),
-						DataTypes.createStructField("SEPAL_WIDTH", DataTypes.DoubleType, false),
-						DataTypes.createStructField("PETAL_LENGTH", DataTypes.DoubleType, false),
-						DataTypes.createStructField("PETAL_WIDTH", DataTypes.DoubleType, false),
-						DataTypes.createStructField("SPECIES", DataTypes.StringType, false) 
-					});
+				.createStructType(Lists.newArrayList(fields));
 
 		//Change data frame back to RDD
 		JavaRDD<Row> rdd1 = irisDf.toJavaRDD().repartition(2);
 		
 		//Function to map.
+
 		JavaRDD<Row> rdd2 = rdd1.map( new Function<Row, Row>() {
 
 			@Override
 			public Row call(Row iRow) throws Exception {
-				
-				Row retRow = RowFactory.create( Double.valueOf(iRow.getString(1)), 
-								Double.valueOf(iRow.getString(2)), 
-								Double.valueOf(iRow.getString(3)), 
-								Double.valueOf(iRow.getString(4)), 								
-								iRow.getString(5)
-						);
+				List<Object> mlist = new ArrayList<Object>();
+				for(int i = 1; i<=varsX.length;i++) {
+					mlist.add(Double.valueOf(iRow.getString(i)));
+				}
+				mlist.add(iRow.getString(varsX.length+1));
+				Row retRow = RowFactory.create(mlist.toArray());
 				
 				return retRow;
 			}
-
 		});
-		
+
 		//Create Data Frame back.
 		Dataset<Row> irisCleansedDf = spSession.createDataFrame(rdd2, irisSchema);
 		System.out.println("Transformed Data :");
+		System.out.println(irisCleansedDf.toString());
 		irisCleansedDf.show(5);
 		
 		/*--------------------------------------------------------------------------
@@ -91,13 +107,13 @@ public class SparkMLDecisionTreesDemo {
 		//Add an index using string indexer.
 		
 		StringIndexer indexer = new StringIndexer()
-				  .setInputCol("SPECIES")
+				  .setInputCol(varY)
 				  .setOutputCol("IND_SPECIES");
 		
 		StringIndexerModel siModel = indexer.fit(irisCleansedDf);
 		Dataset<Row> indexedIris = siModel.transform(irisCleansedDf);
 								
-		indexedIris.groupBy(col("SPECIES"),col("IND_SPECIES")).count().show();
+		indexedIris.groupBy(col(varY),col("IND_SPECIES")).count().show();
 		
 		//Perform correlation analysis
 		for ( StructField field : irisSchema.fields() ) {
@@ -118,13 +134,13 @@ public class SparkMLDecisionTreesDemo {
 
 			@Override
 			public LabeledPoint call(Row iRow) throws Exception {
-				
-				LabeledPoint lp = new LabeledPoint(iRow.getDouble(5) , 
-									Vectors.dense(iRow.getDouble(0),
-											iRow.getDouble(1),
-											iRow.getDouble(2),
-											iRow.getDouble(3)));
-				
+				double[] mlist = new double [varsX.length];
+				for(int i = 0; i<varsX.length;i++) {
+					mlist[i]=iRow.getDouble(i);
+				}
+				Vector vect = Vectors.dense(mlist);
+				LabeledPoint lp = new LabeledPoint(iRow.getDouble(varsX.length+1) , 
+									vect);
 				return lp;
 			}
 
