@@ -26,6 +26,7 @@ import static org.apache.spark.sql.functions.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import castorjunior.SparkConnection;
 import org.apache.spark.api.java.JavaRDD;
