@@ -4,51 +4,16 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Scanner;
 
 import javax.script.ScriptEngine;
 
-import org.renjin.script.RenjinScriptEngineFactory;
+public class RengineSVM extends RengineMethod {
 
-public class RengineSVM {
-
-
-	@SuppressWarnings("resource")
-	public static void main(String[] args) throws Exception {
-		
-		//On crée un scanner, pour que l'utilisateur puisse donner l'adresse du csv, et le nom de la variable explicative
-		
-		Scanner saisieUtilisateur = new Scanner(System.in);
-		
-		//On crée un scanner, pour que l'utilisateur puisse donner l'adresse du csv,
-		// le nom de la variable explicative
-		
-		System.out.println("Veuillez saisir l'adresse du csv (par ex. ./src/pages.csv ou ./src/iris.csv, ou n'importe quelle adresse contenant un csv) :");
-		// à décommenter quand les tests seront finis
-		//String strAdresse = saisieUtilisateur.next();
-		String strAdresse = "./src/pages.csv";
-		
-		System.out.println("Veuillez saisir le nom de la variable à expliquer (il faut qu'elle existe dans le csv et qu'elle respecte la casse, sinon le code ne marchera pas):");
-		// à décommenter quand les tests seront finis
-		//String strVariable = saisieUtilisateur.next();
-		String strVariable = "nbPages";
-		
-	    // crée un script Rengine manager:
-	    RenjinScriptEngineFactory factory = new RenjinScriptEngineFactory();
-	    
-	    // crée un Rengine:
-		ScriptEngine engine = factory.getScriptEngine();
+	public void run(String strAdresse, String strVariable, String propApp,ScriptEngine engine) {
 
 	    try{
 	    	
-	    	// on importe d'abord le nom de l'adresse mémoire du csv sous R
-	    	engine.eval("csv <- read.csv("+"\""+strAdresse+"\")");
-	    	System.out.println("Import des données réussi!");
-	    	
-	    	// puis le nom de la variable
-	    	engine.eval("nomVar <- "+"\""+strVariable+"\"");
-	    	
-	    	// puis on crée  un lecteur de fichier r pour lire le script du randomForest ligne à ligne 
+	    	// on crée  un lecteur de fichier r pour lire le script du support vector machine ligne à ligne 
 	    	
 	    	InputStream flux = new FileInputStream("src/svm.R");
 	    	InputStreamReader lecture = new InputStreamReader(flux);

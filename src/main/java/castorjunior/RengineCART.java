@@ -4,30 +4,18 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Scanner;
 
-import javax.script.*;
+import javax.script.ScriptEngine;
 
-public class RengineRandomForest extends RengineMethod {
+public class RengineCART extends RengineMethod {
 
-	@SuppressWarnings("resource")
-	public void run(String strAdresse, String strVariable, String propApp, ScriptEngine engine) {
+	public void run(String strAdresse, String strVariable, String propApp,ScriptEngine engine) {
 		
-		// on crée un scanner, pour que l'utilisateur puisse donner le nombre d'arbres
-		
-		Scanner saisieUtilisateur = new Scanner(System.in);
-		
-		System.out.println("Veuillez saisir le nombre d'arbres utilisés (par ex. 1000) :");
-		String nbArbre = saisieUtilisateur.next();
-
 	    try{
 	    	
-	    	// puis le nombre d'arbres utilisés
-	    	engine.eval("nbArbre <- as.numeric("+nbArbre+")");
-
-	    	// puis on crée  un lecteur de fichier r pour lire le script du randomForest ligne à ligne 
+	    	// on crée  un lecteur de fichier r pour lire le script du support vector machine ligne à ligne 
 	    	
-	    	InputStream flux = new FileInputStream("src/randomForest.R");
+	    	InputStream flux = new FileInputStream("src/cart.R");
 	    	InputStreamReader lecture = new InputStreamReader(flux);
 	    	BufferedReader buff = new BufferedReader(lecture);
 	    	String ligne;
