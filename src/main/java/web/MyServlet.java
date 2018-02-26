@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import castorjunior.CSV2Arff;
+import castorjunior.WekaTraining;
 import weka.classifiers.trees.J48;
 import weka.core.Instances;
 import weka.core.converters.ArffSaver;
@@ -54,76 +56,41 @@ public class MyServlet extends HttpServlet {
     	// CA MARCHE PAS MAIS ON LAISSE AU CAS OU
     	
 		String path = req.getParameter("chemin");
+		CSV2Arff transformateur = new CSV2Arff();
 		
-		System.out.println(path);
+		String aux = path.substring(0, path.length()-3)+"arff";
+		
+		System.out.println(aux);
 
-		BufferedReader br = new BufferedReader(new FileReader(path));	     
+		/*BufferedReader br = new BufferedReader(new FileReader(path));	     
 	     
 		String test = (br.readLine());
-		System.out.println(test);
+		System.out.println(test);*/
+		
+		
 		try {
-			lire_csv(path);
-		} catch (Exception e) {
+			transformateur.transfo(path,aux);
+		} catch (Exception e1) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e1.printStackTrace();
 		}
+		
+		
+		WekaTraining wekaTrainer = new WekaTraining();
+		
+		
 		try {
-			weka();
-		} catch (Exception e) {
+			wekaTrainer.training(aux);
+		} catch (Exception e1) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e1.printStackTrace();
 		}
+		
 
 		this.getServletContext().getRequestDispatcher("/myform.html").forward(req, resp);				
 
     
-    }
-    
-    public void lire_csv(String chemin) throws Exception {
-    	
-        
-        // load CSV
-        CSVLoader loader = new CSVLoader();
-        loader.setSource(new File(chemin));
-        Instances data = loader.getDataSet();
-     
-        // save ARFF
-        ArffSaver saver = new ArffSaver();
-        saver.setInstances(data);
-        saver.setFile(new File("src/csv.arff"));
-        saver.setDestination(new File("src/csv.arff"));
-        saver.writeBatch();
-        System.out.println("qsd");
-      }   
-    
-    public static void weka() throws Exception {
-        // train classifier
-        J48 cls = new J48();
-        Instances data = new Instances(new BufferedReader(new FileReader("src/csv.arff")));
-        data.setClassIndex(data.numAttributes() - 1);
-        cls.buildClassifier(data);
-
-        // display classifier
-        final javax.swing.JFrame jf = 
-          new javax.swing.JFrame("Weka Classifier Tree Visualizer: J48");
-        jf.setSize(500,400);
-        jf.getContentPane().setLayout(new BorderLayout());
-        TreeVisualizer tv = new TreeVisualizer(null,
-            cls.graph(),
-            new PlaceNode2());
-        jf.getContentPane().add(tv, BorderLayout.CENTER);
-        jf.addWindowListener(new java.awt.event.WindowAdapter() {
-          public void windowClosing(java.awt.event.WindowEvent e) {
-            jf.dispose();
-          }
-        });
-
-        jf.setVisible(true);
-        tv.fitToScreen();
-      }
-    
-    
-    
+    }    
 
 
 }
