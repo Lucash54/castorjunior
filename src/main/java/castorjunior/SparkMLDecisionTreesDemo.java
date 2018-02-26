@@ -67,11 +67,11 @@ public class SparkMLDecisionTreesDemo {
 			@Override
 			public Row call(Row iRow) throws Exception {
 				
-				Row retRow = RowFactory.create( Double.valueOf(iRow.getString(0)), 
-								Double.valueOf(iRow.getString(1)), 
+				Row retRow = RowFactory.create( Double.valueOf(iRow.getString(1)), 
 								Double.valueOf(iRow.getString(2)), 
-								Double.valueOf(iRow.getString(3)), 								
-								iRow.getString(4)
+								Double.valueOf(iRow.getString(3)), 
+								Double.valueOf(iRow.getString(4)), 								
+								iRow.getString(5)
 						);
 				
 				return retRow;
