@@ -6,10 +6,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Scanner;
 
-import javax.script.*;
-import org.renjin.script.*;
+import javax.script.ScriptEngine;
 
-public class RengineRandomForest {
+import org.renjin.script.RenjinScriptEngineFactory;
+
+public class RengineSVM {
+
 
 	@SuppressWarnings("resource")
 	public static void main(String[] args) throws Exception {
@@ -20,20 +22,16 @@ public class RengineRandomForest {
 		
 		//On crée un scanner, pour que l'utilisateur puisse donner l'adresse du csv,
 		// le nom de la variable explicative
-		// le nombre d'arbres utilisé
-		// et la proportion d'apprentissage/proportion de test
 		
 		System.out.println("Veuillez saisir l'adresse du csv (par ex. ./src/pages.csv ou ./src/iris.csv, ou n'importe quelle adresse contenant un csv) :");
-		String strAdresse = saisieUtilisateur.next();
+		// à décommenter quand les tests seront finis
+		//String strAdresse = saisieUtilisateur.next();
+		String strAdresse = "./src/pages.csv";
 		
 		System.out.println("Veuillez saisir le nom de la variable à expliquer (il faut qu'elle existe dans le csv et qu'elle respecte la casse, sinon le code ne marchera pas):");
-		String strVariable = saisieUtilisateur.next();
-		
-		System.out.println("Veuillez saisir le nombre d'arbres utilisés (par ex. 1000) :");
-		String nbArbre = saisieUtilisateur.next();
-		
-		System.out.println("Veuillez saisir la proportion d'apprentissage (ex: pour 70% d'app et 30% de test, taper 0.7) :");
-		String propApp = saisieUtilisateur.next();
+		// à décommenter quand les tests seront finis
+		//String strVariable = saisieUtilisateur.next();
+		String strVariable = "nbPages";
 		
 	    // crée un script Rengine manager:
 	    RenjinScriptEngineFactory factory = new RenjinScriptEngineFactory();
@@ -50,23 +48,12 @@ public class RengineRandomForest {
 	    	// puis le nom de la variable
 	    	engine.eval("nomVar <- "+"\""+strVariable+"\"");
 	    	
-	    	// puis le nombre d'arbres utilisés
-	    	engine.eval("nbArbre <- as.numeric("+nbArbre+")");
-	    	
-	    	// et enfin la proportion d'apprentissage
-	    	engine.eval("propApp <- as.double("+propApp+")");
-	    	
 	    	// puis on crée  un lecteur de fichier r pour lire le script du randomForest ligne à ligne 
 	    	
-	    	InputStream flux = new FileInputStream("src/randomForest.R");
+	    	InputStream flux = new FileInputStream("src/svm.R");
 	    	InputStreamReader lecture = new InputStreamReader(flux);
 	    	BufferedReader buff = new BufferedReader(lecture);
 	    	String ligne;
-	    	
-	    	// exemple des pages : ./src/pages.csv
-	    	// nbPages comme nom de variable
-	    	// exemple des iris : ./src/iris.csv
-	    	// Species comme nom de variable
 	    	
 	    	// tant que le fichier n'est pas entièrement lu, càd qu'on arrive pas à la dernière ligne
 	    	
