@@ -8,6 +8,8 @@ import org.renjin.script.RenjinScriptEngineFactory;
 
 public class Rengine {
 	
+	//à terme, ça ne sera pas une main, mais plutôt un appel via un menu plus grand, qui pourra lancer les trois librairies
+	
 	@SuppressWarnings("resource")
 	public static void main(String[] args) {
 		
