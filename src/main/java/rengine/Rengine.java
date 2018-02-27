@@ -60,23 +60,20 @@ public class Rengine {
 	    System.out.println("Attention, le svm ne passe pas sur les csv ayant des valeurs booléennes!");
 	    String choix = saisieUtilisateur.next();
 	    
+	    RengineMethod rm = null;
 	    if(choix.equals("c")) {
 	    	System.out.println("Cart choisi!");
-	    	RengineCART rcart = new RengineCART(strAdresse, strVariable, propApp, engine);
-	    	rcart.run();
+	    	rm = new RengineCART(strAdresse, strVariable, propApp, engine);
 	    }
 	    
 	    if(choix.equals("r")) {
-	    	RengineRandomForest rrf = new RengineRandomForest(strAdresse, strVariable, propApp, engine);
-	    	rrf.run();
+	    	rm = new RengineRandomForest(strAdresse, strVariable, propApp, engine);
 	    }
 	    
 	    if(choix.equals("s")) {
-	    	RengineSVM rsvm = new RengineSVM(strAdresse, strVariable, propApp, engine);
-	    	rsvm.run();
+	    	rm = new RengineSVM(strAdresse, strVariable, propApp, engine);
 	    }
-
-	    
+	    rm.run();
 	}
 
 }
