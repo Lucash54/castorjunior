@@ -13,14 +13,16 @@ import weka.gui.treevisualizer.TreeVisualizer;
 
 public class WekaTraining {
 	
+	public static void main(String[] args) throws Exception {
+		training("/src/iris.arff");
+	}
 	
-	
-public void training(String patharff, int columnY) throws Exception {
+public static void training(String patharff, int columnY) throws Exception {
      // train classifier
      J48 cls = new J48();
      Instances data = new Instances(new BufferedReader(new FileReader(patharff)));
      
-     Random rand = new Random(25);   // create seeded number generator
+     Random rand = new Random();   // create seeded number generator
      Instances randData = new Instances(data);   // create copy of original data
      randData.randomize(rand);
      data.setClassIndex(columnY);
@@ -68,7 +70,7 @@ public void training(String patharff, int columnY) throws Exception {
 
 
 
-public void training(String patharff) throws Exception {
+public static void training(String patharff) throws Exception {
     // train classifier
 	Instances data = new Instances(new BufferedReader(new FileReader(patharff)));
 	training(patharff, data.numAttributes() - 1);
