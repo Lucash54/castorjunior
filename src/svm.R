@@ -1,5 +1,7 @@
 library('org.renjin.cran:e1071')
 "librairie e1071 chargée!"
+"On enlève les variables inutiles qui n'ont qu'une seule valeur"
+csv <- csv[,which(sapply(csv, function(x) length(levels(as.factor(x)))<2)==F)]
 "On regarde le nom des colonnes"
 col <- colnames(csv)
 "La variable à expliquer est (s'il n'y a rien après cette ligne, la variable n'existe pas, il faudra checker le csv)"

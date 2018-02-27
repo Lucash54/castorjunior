@@ -57,7 +57,6 @@ public class Rengine {
 	    
 	    //puis on choisit la méthode
 	    System.out.println("Veuillez choisir votre méthode (c pour cart, r pour random forest et s pour svm)");
-	    System.out.println("Attention, le svm ne passe pas sur les csv ayant des valeurs booléennes!");
 	    String choix = saisieUtilisateur.next();
 	    
 	    RengineMethod rm = null;
@@ -67,10 +66,12 @@ public class Rengine {
 	    }
 	    
 	    if(choix.equals("r")) {
+	    	System.out.println("RanfomForest choisi!");
 	    	rm = new RengineRandomForest(strAdresse, strVariable, propApp, engine);
 	    }
 	    
 	    if(choix.equals("s")) {
+	    	System.out.println("SVM choisi!");
 	    	rm = new RengineSVM(strAdresse, strVariable, propApp, engine);
 	    }
 	    rm.run();
