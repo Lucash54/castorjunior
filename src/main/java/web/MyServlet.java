@@ -80,7 +80,7 @@ public class MyServlet extends HttpServlet {
 		
 		
 		try {
-			wekaTrainer.training(aux);
+			wekaTrainer.training(aux,"Species");
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

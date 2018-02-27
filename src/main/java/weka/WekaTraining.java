@@ -18,31 +18,39 @@ public class WekaTraining {
 	
 	public static void main(String[] args) throws Exception {
 		CSV2Arff inst = CSV2Arff.getInstance();
-		inst.transfo("./src/pages2.csv", "./src/pages2.arff");
-		//training("./src/pages2.arff",18);
-		//training("./src/iris.arff",5);
+		
+		// On transforme son csv en arff (en modifiant la var à expliquer)
+		inst.transfo("./src/pages.csv", "./src/pages.arff","nbPages");
+		inst.transfo("./src/iris.csv", "./src/iris.arff","Species");
+		
+		// On lance le training 
+		training("./src/pages.arff","nbPages");
+		//training("./src/iris.arff","Species");
 	}
 	
 	/** gère la classification par arbre CART
 	 * en entrée :
 	 * - le chemin du fichier .arff
-	 * - le numéro de la variable à expliquer dans le csv
+	 * - le nom de la variable à expliquer dans le csv
 	 * en sortie console:
 	 * - le résumé du modèle CART utilisé, comprenant la précision du modèle
 	 * - une JFrame contenant l'arbre
 	 */
 	
-	public static void training(String patharff, int columnY) throws Exception {
+	public static void training(String patharff, String varY) throws Exception {
 		
 	     // J48 est la classe qui correspond à la classification des arbres CART
 	     J48 cls = new J48();
 	     
 	     // on crée une instance, qui va lire le fichier .arff contenu dans l'adresse définie par patharff
 	     Instances data = new Instances(new BufferedReader(new FileReader(patharff)));
-	     
+	    
 	     // puis on crée une génération de nombres aléatoires, qui serviront à délimiter 
 	     // l'échantillon d'apprentissage et l'échantillon de test
+	     
 	     Random rand = new Random();
+	     //On récupère le numéro de colonne de la variable à expliquer
+	     int columnY = data.attribute(varY).index();
 	     
 	     // on crée une copie des données
 	     Instances randData = new Instances(data); 
@@ -94,29 +102,4 @@ public class WekaTraining {
 	     jf.setVisible(true);
 	     tv.fitToScreen();
 	  }
-
-
-
-	/** 
-	 * alternative à la fonction précédente,
-	 * mais prend la dernière variable par défaut comme variable à expliquer
-	 */
-
-	public static void training(String patharff) throws Exception {
-		
-		Instances data = new Instances(new BufferedReader(new FileReader(patharff)));
-		training(patharff, data.numAttributes() - 1);
-		
-	}
-
-
-
-
-
-
-
-
-
-
-
 }

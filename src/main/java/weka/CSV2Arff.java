@@ -3,7 +3,9 @@ package weka;
 import weka.core.Instances;
 import weka.core.converters.ArffSaver;
 import weka.core.converters.CSVLoader;
- 
+import weka.filters.Filter;
+import weka.filters.unsupervised.attribute.NumericToNominal;
+
 import java.io.File;
  
 public class CSV2Arff {
@@ -37,14 +39,25 @@ public class CSV2Arff {
 	* et le convertit en .arff (structure de donnéee utilisée par weka)
 	*/
 	
-	public void transfo(String csv, String arff) throws Exception{
+	public void transfo(String csv, String arff, String varY) throws Exception{
  
 	    // charge le csv
 	    CSVLoader loader = new CSVLoader();
 	    loader.setSource(new File(csv));
 	    Instances data = loader.getDataSet();
-	 
-	    // save ARFF
+	    
+	    // On crée un filter nous permettant de rendre la variable à expliquer nominale si elle est numeric. 
+	    NumericToNominal filter1 = new NumericToNominal();
+	    filter1.setInputFormat(data);
+	    
+	    // On récupère l'indice de la variable à expliquer
+	    int n = data.attribute(varY).index()+1;
+	    filter1.setAttributeIndices(""+n);
+	   
+	    // On utilise le filter
+	    data = Filter.useFilter(data, filter1);
+	    
+	    // On sauve l'arff
 	    ArffSaver saver = new ArffSaver();
 	    saver.setInstances(data);
 	    saver.setFile(new File(arff));
@@ -59,8 +72,8 @@ public class CSV2Arff {
 	* avec un répertoire par défault pour le fichier .arff
 	*/
 
-	public void transfo(String csv) throws Exception {
-	  transfo(csv,"src/default.arff");
+	public void transfo(String csv,String varY) throws Exception {
+	  transfo(csv,"src/default.arff",varY);
 	}
   
 }

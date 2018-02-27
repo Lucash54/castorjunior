@@ -34,8 +34,8 @@ import rengine.RengineSVM;
  * Cette classe SparkML permet de calculer, grâce à 3 méthodes (arbre de classification, random forest et svm),
  * l'accuracy du modèle sur les données.
  *
- * Consignes : Le fichier est un csv. Les variables explicatives doivent être numériques. La première colonne est un identifiant
- * ne servant pas aux calculs. Pour le svm, la variable à expliquer doit être binaire.
+ * Consignes : Le fichier est un csv. Les variables explicatives doivent être numériques. La première colonne est un identifiant ne
+ * servant pas aux calculs. Pour le svm, la variable à expliquer doit être binaire. Les noms de variables ne doivent pas contenir de point.
  */
 
 
