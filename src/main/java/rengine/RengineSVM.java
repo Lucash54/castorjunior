@@ -9,7 +9,11 @@ import javax.script.ScriptEngine;
 
 public class RengineSVM extends RengineMethod {
 
-	public void run(String strAdresse, String strVariable, String propApp,ScriptEngine engine) {
+	public RengineSVM(String strAdresse, String strVariable, String propApp, ScriptEngine engine) {
+		super(strAdresse, strVariable, propApp, engine);
+	}
+
+	public void run() {
 
 	    try{
 	    	

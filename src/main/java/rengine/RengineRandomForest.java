@@ -10,8 +10,12 @@ import javax.script.*;
 
 public class RengineRandomForest extends RengineMethod {
 
+	public RengineRandomForest(String strAdresse, String strVariable, String propApp, ScriptEngine engine) {
+		super(strAdresse, strVariable, propApp, engine);
+	}
+
 	@SuppressWarnings("resource")
-	public void run(String strAdresse, String strVariable, String propApp, ScriptEngine engine) {
+	public void run() {
 		
 		// on crée un scanner, pour que l'utilisateur puisse donner le nombre d'arbres
 		
