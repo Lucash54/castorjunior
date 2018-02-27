@@ -19,7 +19,7 @@ public class WekaTraining {
 	public static void main(String[] args) throws Exception {
 		CSV2Arff inst = CSV2Arff.getInstance();
 		inst.transfo("./src/pages.csv", "./src/pages.arff");
-		training("./src/pages.arff",19);
+		training("./src/pages.arff");
 	}
 	
 	
