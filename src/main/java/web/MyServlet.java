@@ -56,7 +56,7 @@ public class MyServlet extends HttpServlet {
     	// CA MARCHE PAS MAIS ON LAISSE AU CAS OU
     	
 		String path = req.getParameter("chemin");
-		CSV2Arff transformateur = new CSV2Arff();
+		CSV2Arff transformateur = CSV2Arff.getInstance();
 		
 		String aux = path.substring(0, path.length()-3)+"arff";
 		

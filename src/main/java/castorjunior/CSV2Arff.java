@@ -5,42 +5,65 @@ import weka.core.converters.ArffSaver;
 import weka.core.converters.CSVLoader;
  
 import java.io.File;
-import java.io.IOException;
  
 public class CSV2Arff {
-  /**
-   * takes 2 arguments:
-   * - CSV input file
-   * - ARFF output file
- * @throws Exception 
-   */
 	
+	/** 
+	* On utilise un design pattern singleton 
+	* pour créer une seule instance de classe pour tout le projet
+	* donc constructeur privé et appel à l'instance public
+	*/
 	
-  public void transfo(String csv, String arff) throws Exception{
-	String [] args = {csv,arff}; 
-    if (args.length != 2) {
-      System.out.println("\nUsage: CSV2Arff <input.csv> <output.arff>\n");
-      System.exit(1);
+	private static volatile CSV2Arff instance = null;
+	
+	private CSV2Arff() {}
+	
+	public final static CSV2Arff getInstance() {
+        //Le "Double-Checked Singleton"/"Singleton doublement vérifié" permet 
+        //d'éviter un appel coûteux à synchronized, 
+        //une fois que l'instanciation est faite.
+        if (CSV2Arff.instance == null) {
+           // On évite la multi-instanciation avec le synchronized
+           synchronized(CSV2Arff.class) {
+             if (CSV2Arff.instance == null) {
+            	 CSV2Arff.instance = new CSV2Arff();
+             }
+           }
+        }
+        return CSV2Arff.instance;
     }
+
+	
+	/**
+	* prend un .csv en entrée, 
+	* et le convertit en .arff (structure de donnéee utilisée par weka)
+	*/
+	
+	public void transfo(String csv, String arff) throws Exception{
  
-    // load CSV
-    CSVLoader loader = new CSVLoader();
-    loader.setSource(new File(args[0]));
-    Instances data = loader.getDataSet();
- 
-    // save ARFF
-    ArffSaver saver = new ArffSaver();
-    saver.setInstances(data);
-    saver.setFile(new File(args[1]));
-    saver.setDestination(new File(args[1]));
-    saver.writeBatch();
-  }
+	    // charge le csv
+	    CSVLoader loader = new CSVLoader();
+	    loader.setSource(new File(csv));
+	    Instances data = loader.getDataSet();
+	 
+	    // save ARFF
+	    ArffSaver saver = new ArffSaver();
+	    saver.setInstances(data);
+	    saver.setFile(new File(arff));
+	    saver.setDestination(new File(arff));
+	    saver.writeBatch();
+	 }
 
+	
+	/**
+	* Alternative à la fonction précédente, 
+	* avec un répertoire par défault pour le fichier .arff
+	*/
 
-
-  public void transfo(String csv) throws Exception {
+	public void transfo(String csv) throws Exception {
 	  transfo(csv,"src/default.arff");
-  }
+	}
+  
 }
   
   
