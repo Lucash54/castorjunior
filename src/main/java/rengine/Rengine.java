@@ -62,18 +62,18 @@ public class Rengine {
 	    
 	    if(choix.equals("c")) {
 	    	System.out.println("Cart choisi!");
-	    	RengineCART rcart = new RengineCART();
-	    	rcart.run(strAdresse, strVariable, propApp, engine);
+	    	RengineCART rcart = new RengineCART(strAdresse, strVariable, propApp, engine);
+	    	rcart.run();
 	    }
 	    
 	    if(choix.equals("r")) {
-	    	RengineRandomForest rrf = new RengineRandomForest();
-	    	rrf.run(strAdresse, strVariable, propApp, engine);
+	    	RengineRandomForest rrf = new RengineRandomForest(strAdresse, strVariable, propApp, engine);
+	    	rrf.run();
 	    }
 	    
 	    if(choix.equals("s")) {
-	    	RengineSVM rsvm = new RengineSVM();
-	    	rsvm.run(strAdresse, strVariable, propApp, engine);
+	    	RengineSVM rsvm = new RengineSVM(strAdresse, strVariable, propApp, engine);
+	    	rsvm.run();
 	    }
 
 	    
