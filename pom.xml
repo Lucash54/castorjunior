@@ -4,7 +4,7 @@
   <groupId>com.v2maestros.spark</groupId>
   <artifactId>castorjunior</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+  <packaging>war</packaging>
   
   
   
@@ -61,6 +61,16 @@
 	    <artifactId>randomForest</artifactId>
 	    <version>RELEASE</version>
   	</dependency>
+  	<dependency>
+    <groupId>org.renjin.cran</groupId>
+    <artifactId>e1071</artifactId>
+    <version>RELEASE</version>
+  </dependency>
+    <dependency>
+    <groupId>org.renjin.cran</groupId>
+    <artifactId>rpart</artifactId>
+    <version>RELEASE</version>
+  </dependency>
   	<dependency>
 	    <groupId>commons-lang</groupId>
 	    <artifactId>commons-lang</artifactId>

@@ -1,29 +1,21 @@
-package castorjunior;
+package rengine;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import javax.script.*;
-import org.renjin.script.*;
+import javax.script.ScriptEngine;
 
-public class Rengine {
+public class RengineCART extends RengineMethod {
 
-	  @SuppressWarnings("restriction")
-	public static void main(String[] args) throws Exception {
+	public void run(String strAdresse, String strVariable, String propApp,ScriptEngine engine) {
 		
-	    // create a script engine manager:
-	    RenjinScriptEngineFactory factory = new RenjinScriptEngineFactory();
-	    
-	    // create a Renjin engine:
-		ScriptEngine engine = factory.getScriptEngine();
-
-	    
-	    try{	    		    	
-	    	// on crée d'abord un lecteur de fichier r pour lire le fichier ligne à ligne 
+	    try{
 	    	
-	    	InputStream flux = new FileInputStream("src/script.R"); 
+	    	// on crée  un lecteur de fichier r pour lire le script du support vector machine ligne à ligne 
+	    	
+	    	InputStream flux = new FileInputStream("src/cart.R");
 	    	InputStreamReader lecture = new InputStreamReader(flux);
 	    	BufferedReader buff = new BufferedReader(lecture);
 	    	String ligne;
@@ -34,7 +26,8 @@ public class Rengine {
 	    		System.out.println(engine.eval(ligne));
 	    		// on évalue le code R associé à la ligne lue
 	    	}
-	    	buff.close(); 
+	    	// une fois le code exécuté, on ferme le buffer. Normalement l'accuracy est la dernière ligne affichée
+	    	buff.close();
     	}		
 	    
     	catch (Exception e){
