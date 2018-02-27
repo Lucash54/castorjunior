@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import weka.classifiers.*;
 import weka.classifiers.trees.J48;
 import weka.core.Instances;
+import weka.filters.unsupervised.attribute.NumericToNominal;
 import weka.gui.treevisualizer.PlaceNode2;
 import weka.gui.treevisualizer.TreeVisualizer;
 
@@ -17,11 +18,11 @@ public class WekaTraining {
 	/** à faire disparaitre dès qu'on aura les menus */
 	
 	public static void main(String[] args) throws Exception {
-		CSV2Arff inst = CSV2Arff.getInstance();
-		inst.transfo("./src/pages.csv", "./src/pages.arff");
-		training("./src/pages.arff");
+		//CSV2Arff inst = CSV2Arff.getInstance();
+		//inst.transfo("./src/pages2.csv", "./src/pages2.arff");
+		training("./src/pages.arff",18);
+		training("./src/iris.arff",5);
 	}
-	
 	
 	/** gère la classification par arbre CART
 	 * en entrée :
@@ -37,7 +38,7 @@ public class WekaTraining {
 	     // J48 est la classe qui correspond à la classification des arbres CART
 	     J48 cls = new J48();
 	     
-	     // on crée une instances, qui va lire le fichier .arff contenu dans l'adresse définie par patharff
+	     // on crée une instance, qui va lire le fichier .arff contenu dans l'adresse définie par patharff
 	     Instances data = new Instances(new BufferedReader(new FileReader(patharff)));
 	     
 	     // puis on crée une génération de nombres aléatoires, qui serviront à délimiter 
@@ -48,8 +49,8 @@ public class WekaTraining {
 	     Instances randData = new Instances(data); 
 	     randData.randomize(rand);
 	     data.setClassIndex(columnY);
-	
-	     // on crée les éch d'app et de test
+	     
+	     // on crée les éch. d'app et de test
 	     Instances train = randData.trainCV(5, 0);
 	     Instances test = randData.testCV(5, 0);
 	     
@@ -59,7 +60,7 @@ public class WekaTraining {
 	     // on donne la variable à expliquer pour les ensembles d'apprentissage et de validation
 	     train.setClassIndex(columnY);
 	     test.setClassIndex(columnY);
-	
+	     
 	     // on démarre le machine learning sur l'ensemble d'apprentissage
 	     cls.buildClassifier(train);
 	     
@@ -78,7 +79,7 @@ public class WekaTraining {
 	     final JFrame jf = new JFrame("Weka Classifier Tree : "+ patharff);
 	     
 	     // On définit les options de la fenêtre, puis on insère le graphique relatif à l'arbre CART
-	     jf.setSize(500,400);
+	     jf.setSize(1800,1000);
 	     jf.getContentPane().setLayout(new BorderLayout());
 	     TreeVisualizer tv = new TreeVisualizer(null,cls.graph(),new PlaceNode2());
 	     jf.getContentPane().add(tv, BorderLayout.CENTER);
