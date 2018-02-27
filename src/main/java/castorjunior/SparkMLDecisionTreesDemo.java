@@ -34,8 +34,29 @@ import org.apache.spark.api.java.JavaRDD;
 public class SparkMLDecisionTreesDemo { 
 
 
+	protected static int y = 0;
+
 	public static void main(String[] args) {
-		
+
+		//On crée un scanner, pour que l'utilisateur puisse donner l'adresse du csv, et le nom de la variable explicative
+
+		Scanner saisieUtilisateur = new Scanner(System.in);
+
+		//On crée un scanner, pour que l'utilisateur puisse donner l'adresse du csv,
+		// le nom de la variable explicative
+		// le nombre d'arbres utilisé
+
+		System.out.println("Veuillez saisir l'adresse du csv (par ex. ./src/pages.csv ou ./src/iris.csv, ou n'importe quelle adresse contenant un csv) :");
+		String strAdresse = saisieUtilisateur.next();
+
+		System.out.println("Veuillez saisir le nom de la variable à expliquer (il faut qu'elle existe dans le csv et qu'elle respecte la casse, sinon le code ne marchera pas):");
+		String strVariable = saisieUtilisateur.next();
+
+		System.out.println("Veuillez saisir la proportion d'apprentissage (ex: pour 70% d'app et 30% de test, taper 0.7) :");
+		String pA = saisieUtilisateur.next();
+		double propApp = Double.parseDouble(pA);
+
+
 		Logger.getLogger("org").setLevel(Level.ERROR);
 		Logger.getLogger("akka").setLevel(Level.ERROR);
 		JavaSparkContext spContext = SparkConnection.getContext();
@@ -46,7 +67,7 @@ public class SparkMLDecisionTreesDemo {
 		--------------------------------------------------------------------------*/
 		Dataset<Row> irisDf = spSession.read()
 				.option("header","true")
-				.csv("src/iris.csv");
+				.csv(strAdresse);
 		irisDf.show(5);
 		irisDf.printSchema();
 		
@@ -57,14 +78,19 @@ public class SparkMLDecisionTreesDemo {
 		
 		//Create the schema for the data to be loaded into Dataset.
 		String[] header = irisDf.columns();
+		String varY = strVariable;
 		int l= header.length;
 		String[] varsX = new String[l-2];
 		int j=0;
-		for(int i = 1; i < l-1; i++){
-			varsX[j]=header[i];
-			j++;
+		for(int i = 1; i < l; i++){
+			String s = header[i];
+			if(s.equals(varY)) {
+				y=i;
+			}else {
+				varsX[j]=s;
+				j++;
+			}
 		}
-		String varY = header[l-1];
 		StructField[] fields = new StructField[varsX.length+1];
 		int i=0;
 		for (String s : varsX){
@@ -85,10 +111,12 @@ public class SparkMLDecisionTreesDemo {
 			@Override
 			public Row call(Row iRow) throws Exception {
 				List<Object> mlist = new ArrayList<Object>();
-				for(int i = 1; i<=varsX.length;i++) {
-					mlist.add(Double.valueOf(iRow.getString(i)));
+				for(int i = 1; i<=varsX.length+1;i++) {
+					if(i!=y) {
+						mlist.add(Double.valueOf(iRow.getString(i)));
+					}
 				}
-				mlist.add(iRow.getString(varsX.length+1));
+				mlist.add(iRow.getString(y));
 				Row retRow = RowFactory.create(mlist.toArray());
 				
 				return retRow;
@@ -136,13 +164,14 @@ public class SparkMLDecisionTreesDemo {
 			@Override
 			public LabeledPoint call(Row iRow) throws Exception {
 				double[] mlist = new double [varsX.length];
+				int j = 0;
 				for(int i = 0; i<varsX.length;i++) {
 					mlist[i]=iRow.getDouble(i);
 				}
 				Vector vect = Vectors.dense(mlist);
-				LabeledPoint lp = new LabeledPoint(iRow.getDouble(varsX.length+1) , 
-									vect);
+				LabeledPoint lp = new LabeledPoint(iRow.getDouble(varsX.length+1), vect);
 				return lp;
+				
 			}
 
 		});
@@ -151,7 +180,7 @@ public class SparkMLDecisionTreesDemo {
 		irisLp.show(5);
 		
 		// Split the data into training and test sets (30% held out for testing).
-		Dataset<Row>[] splits = irisLp.randomSplit(new double[]{0.7, 0.3});
+		Dataset<Row>[] splits = irisLp.randomSplit(new double[]{propApp, 1-propApp});
 		Dataset<Row> trainingData = splits[0];
 		Dataset<Row> testData = splits[1];
 		
