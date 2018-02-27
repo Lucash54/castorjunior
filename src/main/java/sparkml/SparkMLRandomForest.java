@@ -18,7 +18,8 @@ public class SparkMLRandomForest extends SparkMLMethod{
 	}
 	
 	public void run() {
-
+		
+		// Scanner pour les infos complémentaires
 		@SuppressWarnings("resource")
 		Scanner saisieUtilisateur = new Scanner(System.in);
 
@@ -26,18 +27,14 @@ public class SparkMLRandomForest extends SparkMLMethod{
 		String nbarbre = saisieUtilisateur.next();
 		int nbTrees = Integer.parseInt(nbarbre);
 		
-		/*--------------------------------------------------------------------------
-		Perform machine learning. 
-		--------------------------------------------------------------------------*/	
-
-		//Create the object
-		// Train a DecisionTree model.
+		// Machine learning
+		
 		RandomForestClassifier rf = new RandomForestClassifier()
 				  .setLabelCol("label")
 				  .setFeaturesCol("features")
 				  .setNumTrees(nbTrees);
 		
-		// Convert indexed labels back to original labels.
+		// On récupère l'index des labels et on les remet en index original
 		IndexToString labelConverter = new IndexToString()
 				  .setInputCol("label")
 				  .setOutputCol("labelStr")
@@ -48,22 +45,23 @@ public class SparkMLRandomForest extends SparkMLMethod{
 				  .setOutputCol("predictionStr")
 				  .setLabels(siModel.labels());
 
+		// Calcul du modèle de random forest
 		RandomForestClassificationModel rfm = rf.fit(trainingData);
 		
-		//Predict on test data
+		// Prédiction des données à partir du modèle calculé
 		Dataset<Row> rawPredictions = rfm.transform(testData);
 		Dataset<Row> predictions = predConverter.transform(
 									labelConverter.transform(rawPredictions));
 		
-		//View results
+		// Affichage des 5 premières lignes
 		System.out.println("Result sample :");
 		predictions.select("labelStr", "predictionStr", "features").show(5);
 
-		//View confusion matrix
+		// Affichage de la matrice de confusion
 		System.out.println("Confusion Matrix :");
 		predictions.groupBy(col("labelStr"), col("predictionStr")).count().show();
 		
-		//Accuracy computation
+		// Calcul de l'accuracy
 		MulticlassClassificationEvaluator evaluator = new MulticlassClassificationEvaluator()
 				  .setLabelCol("label")
 				  .setPredictionCol("prediction")

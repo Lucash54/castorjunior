@@ -30,19 +30,26 @@ import rengine.RengineMethod;
 import rengine.RengineRandomForest;
 import rengine.RengineSVM;
 
+/**
+ * Cette classe SparkML permet de calculer, grâce à 3 méthodes (arbre de classification, random forest et svm),
+ * l'accuracy du modèle sur les données.
+ *
+ * Consignes : Le fichier est un csv. Les variables explicatives doivent être numériques. La première colonne est un identifiant
+ * ne servant pas aux calculs. Pour le svm, la variable à expliquer doit être binaire.
+ */
+
+
+
 public class SparkML {
 	protected static int y = 0;
 
 	public static void main(String[] args) {
 
-		//On crée un scanner, pour que l'utilisateur puisse donner l'adresse du csv, et le nom de la variable explicative
+		//On crée un scanner, pour que l'utilisateur puisse donner l'adresse du csv, le nom de la variable explicative,
+		//ainsi que le pourcentage d'apprentissage 
 
 		@SuppressWarnings("resource")
 		Scanner saisieUtilisateur = new Scanner(System.in);
-
-		//On crée un scanner, pour que l'utilisateur puisse donner l'adresse du csv,
-		// le nom de la variable explicative
-		// le nombre d'arbres utilisé
 
 		System.out.println("Veuillez saisir l'adresse du csv (par ex. ./src/pages.csv ou ./src/iris.csv, ou n'importe quelle adresse contenant un csv) :");
 		String strAdresse = saisieUtilisateur.next();
@@ -54,26 +61,21 @@ public class SparkML {
 		String pA = saisieUtilisateur.next();
 		double propApp = Double.parseDouble(pA);
 
-
+		
+		// On commence le travail en SparkML : ON se connecte grâce à une SarkConnection
 		Logger.getLogger("org").setLevel(Level.ERROR);
 		Logger.getLogger("akka").setLevel(Level.ERROR);
 		SparkSession spSession = SparkConnection.getSession();
 		
-		/*--------------------------------------------------------------------------
-		Load Data
-		--------------------------------------------------------------------------*/
+		// On charge les données
 		Dataset<Row> data = spSession.read()
 				.option("header","true")
 				.csv(strAdresse);
+		// On affiche les 5 premières lignes
 		data.show(5);
-		data.printSchema();
+		//data.printSchema();
 		
-		/*--------------------------------------------------------------------------
-		Cleanse Data
-		--------------------------------------------------------------------------*/	
-		//Convert all data types as double; Change missing values to standard ones.
-		
-		//Create the schema for the data to be loaded into Dataset.
+		// On nettoie les données : on convertit les types en double	
 		String[] header = data.columns();
 		String varY = strVariable;
 		int l= header.length;
@@ -95,13 +97,13 @@ public class SparkML {
 			i++;
 		}
 		fields[i]=DataTypes.createStructField(varY, DataTypes.StringType, false);
+		
+		// On crée le schéma des données
 		StructType dataSchema = DataTypes
 				.createStructType(Lists.newArrayList(fields));
 
-		//Change data frame back to RDD
+		// On crée les rdd pour les transformer en dataset
 		JavaRDD<Row> rdd1 = data.toJavaRDD().repartition(2);
-		
-		//Function to map.
 
 		JavaRDD<Row> rdd2 = rdd1.map( new Function<Row, Row>() {
 
@@ -120,17 +122,16 @@ public class SparkML {
 			}
 		});
 
-		//Create Data Frame back.
+		// Création du dataset nettoyé
 		Dataset<Row> dataCleansedDf = spSession.createDataFrame(rdd2, dataSchema);
+		
+		// On affiche les données sur lesquelles nous allons pouvoir travailler
 		System.out.println("Transformed Data :");
 		System.out.println(dataCleansedDf.toString());
 		dataCleansedDf.show(5);
 		
-		/*--------------------------------------------------------------------------
-		Analyze Data
-		--------------------------------------------------------------------------*/
+		// ANALYSE
 		
-		//Add an index using string indexer.
 		String codeVarY = "code_"+varY;
 		StringIndexer indexer = new StringIndexer()
 				  .setInputCol(varY)
@@ -141,7 +142,7 @@ public class SparkML {
 								
 		indexedData.groupBy(col(varY),col(codeVarY)).count().show();
 		
-		//Perform correlation analysis
+		// Corrélations :
 		for ( StructField field : dataSchema.fields() ) {
 			if ( ! field.dataType().equals(DataTypes.StringType)) {
 				System.out.println( "Correlation between "+ codeVarY +" and " + field.name()
@@ -149,11 +150,9 @@ public class SparkML {
 			}
 		}
 		
-		/*--------------------------------------------------------------------------
-		Prepare for Machine Learning. 
-		--------------------------------------------------------------------------*/
+		// Préparation pour le machine learning
 		
-		//Convert data to labeled Point structure
+		// On passe split les données en données apprentissage / test
 		JavaRDD<Row> rdd3 = indexedData.toJavaRDD().repartition(2);
 		
 		JavaRDD<LabeledPoint> rdd4 = rdd3.map( new Function<Row, LabeledPoint>() {
@@ -174,28 +173,30 @@ public class SparkML {
 		});
 
 		Dataset<Row> dataLp = spSession.createDataFrame(rdd4, LabeledPoint.class);
-		dataLp.show(5);
+		//dataLp.show(5);
 		
-		// Split the data into training and test sets (30% held out for testing).
 		Dataset<Row>[] splits = dataLp.randomSplit(new double[]{propApp, 1-propApp});
 		Dataset<Row> trainingData = splits[0];
 		Dataset<Row> testData = splits[1];
 		
-		//puis on choisit la méthode
+		// puis on choisit la méthode
 	    System.out.println("Veuillez choisir votre méthode (c pour cart, r pour random forest et s pour svm)");
 	    System.out.println("Attention, le svm ne passe pas que sur une var à expliquer binaire et des var explicatives numériques !");
 	    String choix = saisieUtilisateur.next();
 	    
 	    SparkMLMethod sm = null;
 	    if(choix.equals("c")) {
+	    	// Arbre de Classification
 			sm = new SparkMLDecisionTree(siModel, trainingData, testData);
 	    }
 	    
 	    if(choix.equals("r")) {
+	    	// RandomForest
 	    	sm = new SparkMLRandomForest(siModel, trainingData, testData);
 	    }
 	    
 	    if(choix.equals("s")) {
+	    	// SVM
 	    	sm = new SparkMLSVM(siModel, trainingData, testData);
 	    }
 		
