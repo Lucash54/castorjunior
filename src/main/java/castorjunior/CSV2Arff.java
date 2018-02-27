@@ -7,7 +7,7 @@ import weka.core.converters.CSVLoader;
 import java.io.File;
 import java.io.IOException;
  
-public class CSV2Arff {
+public class CSV2Arff { 
   /**
    * takes 2 arguments:
    * - CSV input file

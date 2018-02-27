@@ -1,10 +1,10 @@
 @relation iris
 
 @attribute '' numeric
-@attribute Sepal.Length numeric
-@attribute Sepal.Width numeric
-@attribute Petal.Length numeric
-@attribute Petal.Width numeric
+@attribute Sepal_Length numeric
+@attribute Sepal_Width numeric
+@attribute Petal_Length numeric
+@attribute Petal_Width numeric
 @attribute Species {setosa,versicolor,virginica}
 
 @data
