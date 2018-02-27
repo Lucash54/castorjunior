@@ -1,4 +1,4 @@
-package castorjunior;
+package weka;
 
 import weka.core.Instances;
 import weka.core.converters.ArffSaver;
@@ -19,9 +19,7 @@ public class CSV2Arff {
 	private CSV2Arff() {}
 	
 	public final static CSV2Arff getInstance() {
-        //Le "Double-Checked Singleton"/"Singleton doublement vérifié" permet 
-        //d'éviter un appel coûteux à synchronized, 
-        //une fois que l'instanciation est faite.
+		
         if (CSV2Arff.instance == null) {
            // On évite la multi-instanciation avec le synchronized
            synchronized(CSV2Arff.class) {

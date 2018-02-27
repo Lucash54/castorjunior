@@ -15,8 +15,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import castorjunior.CSV2Arff;
-import castorjunior.WekaTraining;
+import weka.CSV2Arff;
+import weka.WekaTraining;
 import weka.classifiers.trees.J48;
 import weka.core.Instances;
 import weka.core.converters.ArffSaver;

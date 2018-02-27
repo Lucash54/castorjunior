@@ -1,4 +1,4 @@
-package castorjunior;
+package weka;
  
 import java.awt.BorderLayout;
 import java.io.BufferedReader;
@@ -14,16 +14,22 @@ import weka.gui.treevisualizer.TreeVisualizer;
 
 public class WekaTraining {
 	
-	/** lance le training */
+	/** à faire disparaitre dès qu'on aura les menus */
+	
 	public static void main(String[] args) throws Exception {
-		training("./src/iris.arff");
-		training("./src/csv.arff");
+		CSV2Arff inst = CSV2Arff.getInstance();
+		inst.transfo("./src/pages.csv", "./src/pages.arff");
+		training("./src/pages.arff",19);
 	}
+	
 	
 	/** gère la classification par arbre CART
 	 * en entrée :
-	 * - le chemin du fichier
-	 * 
+	 * - le chemin du fichier .arff
+	 * - le numéro de la variable à expliquer dans le csv
+	 * en sortie console:
+	 * - le résumé du modèle CART utilisé, comprenant la précision du modèle
+	 * - une JFrame contenant l'arbre
 	 */
 	
 	public static void training(String patharff, int columnY) throws Exception {
@@ -91,7 +97,10 @@ public class WekaTraining {
 
 
 
-
+	/** 
+	 * alternative à la fonction précédente,
+	 * mais prend la dernière variable par défaut comme variable à expliquer
+	 */
 
 	public static void training(String patharff) throws Exception {
 		
