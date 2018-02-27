@@ -33,7 +33,7 @@ public class CSV2Arff {
 
 	
 	/**
-	* prend un .csv en entrée, 
+	* prend un .csv en entrée, un chemin vers un fichier .arff, et un numero de variable à tranformer en var nominale
 	* et le convertit en .arff (structure de donnéee utilisée par weka)
 	*/
 	
@@ -50,6 +50,7 @@ public class CSV2Arff {
 	    saver.setFile(new File(arff));
 	    saver.setDestination(new File(arff));
 	    saver.writeBatch();
+	    
 	 }
 
 	

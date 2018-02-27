@@ -9,7 +9,6 @@ import javax.swing.JFrame;
 import weka.classifiers.*;
 import weka.classifiers.trees.J48;
 import weka.core.Instances;
-import weka.filters.unsupervised.attribute.NumericToNominal;
 import weka.gui.treevisualizer.PlaceNode2;
 import weka.gui.treevisualizer.TreeVisualizer;
 
@@ -18,10 +17,10 @@ public class WekaTraining {
 	/** à faire disparaitre dès qu'on aura les menus */
 	
 	public static void main(String[] args) throws Exception {
-		//CSV2Arff inst = CSV2Arff.getInstance();
-		//inst.transfo("./src/pages2.csv", "./src/pages2.arff");
-		training("./src/pages.arff",18);
-		training("./src/iris.arff",5);
+		CSV2Arff inst = CSV2Arff.getInstance();
+		inst.transfo("./src/pages2.csv", "./src/pages2.arff");
+		//training("./src/pages2.arff",18);
+		//training("./src/iris.arff",5);
 	}
 	
 	/** gère la classification par arbre CART
@@ -76,7 +75,7 @@ public class WekaTraining {
 	     
 	
 	     // Puis on cherche à afficher l'arbre obtenu dans une JFrame
-	     final JFrame jf = new JFrame("Weka Classifier Tree : "+ patharff);
+	     final JFrame jf = new JFrame("Weka Classifier Tree : " + patharff);
 	     
 	     // On définit les options de la fenêtre, puis on insère le graphique relatif à l'arbre CART
 	     jf.setSize(1800,1000);
