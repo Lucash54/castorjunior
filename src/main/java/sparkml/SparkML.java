@@ -39,6 +39,7 @@ import org.spark_project.guava.collect.Lists;
 public class SparkML {
 	protected static int y = 0;
 
+	@SuppressWarnings("serial")
 	public static void main(String[] args) {
 
 		//On crée un scanner, pour que l'utilisateur puisse donner l'adresse du csv, le nom de la variable explicative,
