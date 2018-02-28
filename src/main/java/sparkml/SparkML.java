@@ -57,9 +57,6 @@ public class SparkML {
 		String pA = saisieUtilisateur.next();
 		double propApp = Double.parseDouble(pA);
 		
-		System.out.println("Veuillez entrer les variables boolean (ex : ACK,BIB,BOLD_ACK,BREF,EMAIL,JS_FOOTNOTESIZE,JS_SCRIPTSIZE,JS_STYLE,JS_TINY,LONG_ACK,LONG_AFFILIATION,PARAGRAPH_ACK,PL_FOOTNOTE,VARY_LATEX).");
-		String varBool = saisieUtilisateur.next();
-		
 		// On commence le travail en SparkML : ON se connecte grâce à une SarkConnection
 		Logger.getLogger("org").setLevel(Level.ERROR);
 		Logger.getLogger("akka").setLevel(Level.ERROR);
@@ -101,24 +98,21 @@ public class SparkML {
 
 		// On crée les rdd pour les transformer en dataset
 		JavaRDD<Row> rdd1 = data.toJavaRDD().repartition(2);
-		System.out.println(varsX[0] + " ; " +varsX[1] + " ; " +varsX[2] + " ; " +varsX[varsX.length-1]);
 		JavaRDD<Row> rdd2 = rdd1.map( new Function<Row, Row>() {
 
 			@Override
 			public Row call(Row iRow) throws Exception {
 				List<Object> mlist = new ArrayList<Object>();
-				int j = 0;
 				for(int i = 1; i<=varsX.length+1;i++) {
 					if(i!=y) {
-						if(varBool.contains(varsX[j])){
-							String aux = iRow.getString(i);
+						String aux = iRow.getString(i);
+						if(aux.equals("true") || aux.equals("false")){
 							boolean aux2 = Boolean.parseBoolean(aux);
 							double bin = aux2 ? 1 : 0;
 							mlist.add(Double.valueOf(bin));
 						}else {
-							mlist.add(Double.valueOf(iRow.getString(i)));
+							mlist.add(Double.valueOf(aux));
 						}
-						j++;
 					}
 				}
 				mlist.add(iRow.getString(y));
