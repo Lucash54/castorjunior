@@ -33,6 +33,7 @@ public class WekaRandomForest {
 	 * - le résumé du modèle utilisé, comprenant la précision du modèle
 	 */
 	
+	@SuppressWarnings("resource")
 	public static void training(String patharff, String varY) throws Exception {
 		
 	     // RandomForest est la classe qui gère les randomForest
