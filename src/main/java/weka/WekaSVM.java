@@ -30,7 +30,7 @@ public class WekaSVM extends WekaMethod {
 	 * - le résumé du modèle utilisé, comprenant la précision du modèle
 	 */
 	
-	public static void training() throws Exception {
+	public void run() throws Exception {
 		
 	     // SMO est la classe qui gère les support vector machine
 	     SMO cls = new SMO();

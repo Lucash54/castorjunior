@@ -32,7 +32,7 @@ public class WekaRandomForest extends WekaMethod {
 	 */
 	
 	@SuppressWarnings("resource")
-	public static void training() throws Exception {
+	public void run() throws Exception {
 		
 	     // RandomForest est la classe qui gère les randomForest
 	     RandomForest cls = new RandomForest();

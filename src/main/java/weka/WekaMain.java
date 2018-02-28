@@ -6,7 +6,7 @@ public class WekaMain {
 	public static void main(String[] args) throws Exception {
 		try {
 			WekaSVM weksv =  new WekaSVM("./src/iris.csv","Species","0.7");
-			weksv.training();
+			weksv.run();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

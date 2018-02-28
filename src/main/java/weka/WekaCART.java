@@ -36,7 +36,7 @@ public class WekaCART extends WekaMethod {
 	 * - une JFrame contenant l'arbre
 	 */
 	
-	public static void training() throws Exception {
+	public void run() throws Exception {
 		
 	     // J48 est la classe qui correspond à la classification des arbres CART
 	     J48 cls = new J48();
