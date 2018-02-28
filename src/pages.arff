@@ -1,4 +1,4 @@
-@relation pages
+@relation pages-weka.filters.unsupervised.attribute.NumericToNominal-R19
 
 @attribute idConfiguration numeric
 @attribute ACK {true,false}
