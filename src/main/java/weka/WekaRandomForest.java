@@ -3,6 +3,7 @@ package weka;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.Random;
+import java.util.Scanner;
 
 import weka.classifiers.Evaluation;
 import weka.core.Instances;
@@ -36,6 +37,15 @@ public class WekaRandomForest {
 		
 	     // RandomForest est la classe qui gère les randomForest
 	     RandomForest cls = new RandomForest();
+	     
+	     // on crée un scanner, pour que l'utilisateur puisse donner le nombre d'arbres
+	     Scanner saisieUtilisateur = new Scanner(System.in);
+		
+	     System.out.println("Veuillez saisir le nombre d'arbres utilisés (par ex. 1000) :");
+	     String nbArbre = saisieUtilisateur.next();
+	     int nb = Integer.parseInt(nbArbre);
+	     cls.setNumTrees(nb);
+
 	     
 	     // on crée une instance, qui va lire le fichier .arff contenu dans l'adresse définie par patharff
 	     Instances data = new Instances(new BufferedReader(new FileReader(patharff)));
