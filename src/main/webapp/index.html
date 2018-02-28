@@ -4,12 +4,50 @@
 
 <FORM Method="POST" Action="/accueil" enctype="multipart/form-data">
 <p>
-<input type="text" name ="chemin"><BR>
+
 <input type="file" name ="file" ><BR>
-<input type="number" name ="colonne"> Numéro de la colonne à expliquer<BR>
-<input type="checkbox" name="algo1" value="Weka"> Weka<br>
-<input type="checkbox" name="algo2" value="Renjin"> Renjin <br>
-<input type="checkbox" name="algo3" value="SpakML"> SparkML <br>
+<input type="text" name ="chemin"><BR><BR>
+<BR>
+
+
+<h1>Algo 1</h1>
+
+Librairie : <SELECT name="lib1" size="1"> <OPTION>Weka <OPTION>SparkML <OPTION>Renjin </SELECT><BR>
+
+Méthode : <SELECT name="method1" size="1"> <OPTION>SVM <OPTION>Random forest <OPTION>CART </SELECT><BR>
+
+
+<input type="number" name ="pctapp1"> Pourcentage échantillon d'apprentissage<BR>
+<input type="number" name ="Param1"> Paramètre supplémentaire<BR>
+
+
+
+
+<h1>Algo 2</h1>
+
+Librairie : <SELECT name="lib2" size="1"> <OPTION>Weka <OPTION>SparkML <OPTION>Renjin </SELECT><BR>
+
+Méthode : <SELECT name="method2" size="1"> <OPTION>SVM <OPTION>Random forest <OPTION>CART </SELECT><BR>
+
+
+<input type="number" name ="pctapp2"> Pourcentage échantillon d'apprentissage<BR>
+<input type="number" name ="Param2"> Paramètre supplémentaire<BR>
+
+
+
+
+
+<h1>Algo 3</h1>
+
+Librairie : <SELECT name="lib1" size="3"> <OPTION>Weka <OPTION>SparkML <OPTION>Renjin </SELECT><BR>
+
+Méthode : <SELECT name="method1" size="3"> <OPTION>SVM <OPTION>Random forest <OPTION>CART </SELECT><BR>
+
+
+<input type="number" name ="pctapp3"> Pourcentage échantillon d'apprentissage<BR>
+<input type="number" name ="Param3"> Paramètre supplémentaire<BR>
+
+
 <INPUT type="submit" value="Send">
 </p>
 </FORM>

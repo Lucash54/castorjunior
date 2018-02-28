@@ -111,15 +111,15 @@ public class MyServlet extends HttpServlet {
 				IOUtils.copy(part.getInputStream(), writer);
 				String theString = writer.toString();
 				if (part.getHeader("content-disposition").contains("chemin")) {
-					System.err.println("chemin = " + theString);
+					System.out.println("chemin = " + theString);
 				}else if (part.getHeader("content-disposition").contains("colonne")) {
-					System.err.println("colonne = " + theString);
+					System.out.println("colonne = " + theString);
 
 				}
 			}
 		}
 		
-		req.setAttribute("message", fileName + " File uploaded successfully!");
+		//req.setAttribute("message", fileName + " File uploaded successfully!");
 		getServletContext().getRequestDispatcher("/1.php").forward(req, resp);
 	}
 
@@ -128,10 +128,10 @@ public class MyServlet extends HttpServlet {
 	 */
 	private String getFileName(Part part) {
 		String contentDisp = part.getHeader("content-disposition");
-		System.out.println("content-disposition header= " + contentDisp);
+		//System.out.println("content-disposition header= " + contentDisp);
 		String[] tokens = contentDisp.split(";");
 		for (String token : tokens) {
-			System.err.println(token);
+			//System.err.println(token);
 			if (token.trim().startsWith("filename")) {
 				return token.substring(token.indexOf("=") + 2, token.length() - 1);
 			}
