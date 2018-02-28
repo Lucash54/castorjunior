@@ -51,16 +51,19 @@ public class SparkML {
 		@SuppressWarnings("resource")
 		Scanner saisieUtilisateur = new Scanner(System.in);
 
-		System.out.println("Veuillez saisir l'adresse du csv (par ex. ./src/pages.csv ou ./src/iris.csv, ou n'importe quelle adresse contenant un csv) :");
-		String strAdresse = saisieUtilisateur.next();
+		//System.out.println("Veuillez saisir l'adresse du csv (par ex. ./src/pages.csv ou ./src/iris.csv, ou n'importe quelle adresse contenant un csv) :");
+		//String strAdresse = saisieUtilisateur.next();
 
-		System.out.println("Veuillez saisir le nom de la variable à expliquer (il faut qu'elle existe dans le csv et qu'elle respecte la casse, sinon le code ne marchera pas):");
-		String strVariable = saisieUtilisateur.next();
+		//System.out.println("Veuillez saisir le nom de la variable à expliquer (il faut qu'elle existe dans le csv et qu'elle respecte la casse, sinon le code ne marchera pas):");
+		//String strVariable = saisieUtilisateur.next();
 
-		System.out.println("Veuillez saisir la proportion d'apprentissage (ex: pour 70% d'app et 30% de test, taper 0.7) :");
-		String pA = saisieUtilisateur.next();
-		double propApp = Double.parseDouble(pA);
-
+		//System.out.println("Veuillez saisir la proportion d'apprentissage (ex: pour 70% d'app et 30% de test, taper 0.7) :");
+		//String pA = saisieUtilisateur.next();
+		//double propApp = Double.parseDouble(pA);
+		String strAdresse = "src/pages.csv";
+		String strVariable = "nbPages";
+		double propApp = 0.7;
+		String varBool = "ACK,BIB,BOLD_ACK,BREF,EMAIL,JS_FOOTNOTESIZE,JS_SCRIPTSIZE,JS_STYLE,JS_TINY,LONG_ACK,LONG_AFFILIATION,PARAGRAPH_ACK,PL_FOOTNOTE,VARY_LATEX";
 		
 		// On commence le travail en SparkML : ON se connecte grâce à une SarkConnection
 		Logger.getLogger("org").setLevel(Level.ERROR);
@@ -90,10 +93,18 @@ public class SparkML {
 				j++;
 			}
 		}
+		String test2 = "";
+		System.out.println(test2.contains("Ceci"));
+		/*ArrayList<String> test=new ArrayList<String>(2);
+		test.contains("ef");*/
 		StructField[] fields = new StructField[varsX.length+1];
 		int i=0;
 		for (String s : varsX){
-			fields[i]=DataTypes.createStructField(s, DataTypes.DoubleType, false);
+			if(varBool.contains(s)) {
+				fields[i]=DataTypes.createStructField(s, DataTypes.BooleanType, false);
+			}else {
+				fields[i]=DataTypes.createStructField(s, DataTypes.DoubleType, false);
+			}
 			i++;
 		}
 		fields[i]=DataTypes.createStructField(varY, DataTypes.StringType, false);
@@ -104,15 +115,21 @@ public class SparkML {
 
 		// On crée les rdd pour les transformer en dataset
 		JavaRDD<Row> rdd1 = data.toJavaRDD().repartition(2);
-
+		System.out.println(varsX[0] + " ; " +varsX[1] + " ; " +varsX[2] + " ; " +varsX[varsX.length-1]);
 		JavaRDD<Row> rdd2 = rdd1.map( new Function<Row, Row>() {
 
 			@Override
 			public Row call(Row iRow) throws Exception {
 				List<Object> mlist = new ArrayList<Object>();
+				int j = 0;
 				for(int i = 1; i<=varsX.length+1;i++) {
 					if(i!=y) {
-						mlist.add(Double.valueOf(iRow.getString(i)));
+						if(varBool.contains(varsX[j])){
+							mlist.add(Boolean.valueOf(iRow.getString(i)));
+						}else {
+							mlist.add(Double.valueOf(iRow.getString(i)));
+						}
+						j++;
 					}
 				}
 				mlist.add(iRow.getString(y));
@@ -143,16 +160,16 @@ public class SparkML {
 		indexedData.groupBy(col(varY),col(codeVarY)).count().show();
 		
 		// Corrélations :
-		for ( StructField field : dataSchema.fields() ) {
+		/*for ( StructField field : dataSchema.fields() ) {
 			if ( ! field.dataType().equals(DataTypes.StringType)) {
 				System.out.println( "Correlation between "+ codeVarY +" and " + field.name()
 				 	+ " = " + indexedData.stat().corr(codeVarY, field.name()) );
 			}
-		}
+		}*/
 		
 		// Préparation pour le machine learning
 		
-		// On passe split les données en données apprentissage / test
+		// On rassemble les données en 1 colonne avec la liste des valeurs des var et 1 colonne avec le label de la var à expliquer 
 		JavaRDD<Row> rdd3 = indexedData.toJavaRDD().repartition(2);
 		
 		JavaRDD<LabeledPoint> rdd4 = rdd3.map( new Function<Row, LabeledPoint>() {
@@ -162,7 +179,13 @@ public class SparkML {
 				double[] mlist = new double [varsX.length];
 				int j = 0;
 				for(int i = 0; i<varsX.length;i++) {
-					mlist[i]=iRow.getDouble(i);
+					if(varBool.contains(varsX[j])){
+						//mlist[i]=iRow.getBoolean(i);
+					}else {
+						mlist[i]=iRow.getDouble(i);
+					}
+					j++;
+					
 				}
 				Vector vect = Vectors.dense(mlist);
 				LabeledPoint lp = new LabeledPoint(iRow.getDouble(varsX.length+1), vect);
@@ -173,8 +196,11 @@ public class SparkML {
 		});
 
 		Dataset<Row> dataLp = spSession.createDataFrame(rdd4, LabeledPoint.class);
-		//dataLp.show(5);
-		
+		spSession.cre
+		//dataLp = dataCleansedDf;
+		dataLp.show(5);
+
+		// On split les données en données apprentissage / test
 		Dataset<Row>[] splits = dataLp.randomSplit(new double[]{propApp, 1-propApp});
 		Dataset<Row> trainingData = splits[0];
 		Dataset<Row> testData = splits[1];
