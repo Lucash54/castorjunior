@@ -1,7 +1,7 @@
 /** File provided by V2 Maestros for its students for education purposes only
  * Copyright @2016 All rights reserved.
  */
-package castorjunior;
+package sparkml;
 
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.SparkSession ;
