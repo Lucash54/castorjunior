@@ -21,6 +21,20 @@ maxRequestSize=1024*1024*100)   	// 100 MB
 public class MyServlet extends HttpServlet {
 
 	private static final String UPLOAD_DIR = "/tmp";
+	public String vary=null;
+	public String lib1=null;
+	public String method1=null;
+	public String pctapp1= null;
+	public String param1= null;
+	public String lib2=null;
+	public String method2=null;
+	public String pctapp2= null;
+	public String param2= null;
+	public String lib3=null;
+	public String method3=null;
+	public String pctapp3= null;
+	public String param3= null;
+
 
 	public void init() {
 
@@ -37,7 +51,7 @@ public class MyServlet extends HttpServlet {
 		// CA MARCHE PAS MAIS ON LAISSE AU CAS OU
 
 		System.out.println("getget");
-		this.getServletContext().getRequestDispatcher("/1.php").forward(req, resp);
+		this.getServletContext().getRequestDispatcher("/index.html").forward(req, resp);
 
 	}
 
@@ -87,6 +101,29 @@ public class MyServlet extends HttpServlet {
 		 * resp);
 		 * 
 		 */
+		
+				loadFormData(req);
+				getServletContext().getRequestDispatcher("/1.php").forward(req, resp);
+	}
+
+	/**
+	 * Utility method to get file name from HTTP header content-disposition
+	 */
+	private String getFileName(Part part) {
+		String contentDisp = part.getHeader("content-disposition");
+		//System.out.println("content-disposition header= " + contentDisp);
+		String[] tokens = contentDisp.split(";");
+		for (String token : tokens) {
+			//System.err.println(token);
+			if (token.trim().startsWith("filename")) {
+				return token.substring(token.indexOf("=") + 2, token.length() - 1);
+			}
+		}
+		return "";
+	}
+	
+	
+	private void loadFormData(HttpServletRequest req) throws IOException, ServletException {
 
 		// gets absolute path of the web application
 		String applicationPath = req.getServletContext().getRealPath("");
@@ -110,32 +147,38 @@ public class MyServlet extends HttpServlet {
 				StringWriter writer = new StringWriter();
 				IOUtils.copy(part.getInputStream(), writer);
 				String theString = writer.toString();
-				if (part.getHeader("content-disposition").contains("chemin")) {
-					System.out.println("chemin = " + theString);
-				}else if (part.getHeader("content-disposition").contains("colonne")) {
-					System.out.println("colonne = " + theString);
-
+				if (part.getHeader("content-disposition").contains("variabley")) {
+					this.vary=theString;
+				}else if (part.getHeader("content-disposition").contains("lib1")) {
+					this.lib1=theString;
+				}else if (part.getHeader("content-disposition").contains("lib2")) {
+					this.lib2=theString;
+				}else if (part.getHeader("content-disposition").contains("lib3")) {
+					this.lib3=theString;
+				}else if (part.getHeader("content-disposition").contains("method1")) {
+					this.method1=theString;
+				}else if (part.getHeader("content-disposition").contains("method2")) {
+					this.method2=theString;
+				}else if (part.getHeader("content-disposition").contains("method3")) {
+					this.method3=theString;
+				}else if (part.getHeader("content-disposition").contains("pctapp1")) {
+					this.pctapp1=theString;
+				}else if (part.getHeader("content-disposition").contains("pctapp2")) {
+					this.pctapp2=theString;
+				}else if (part.getHeader("content-disposition").contains("pctapp3")) {
+					this.pctapp3=theString;
+				}else if (part.getHeader("content-disposition").contains("param1")) {
+					this.param1=theString;
+				}else if (part.getHeader("content-disposition").contains("param2")) {
+					this.param2=theString;
+				}else if (part.getHeader("content-disposition").contains("param3")) {
+					this.param3=theString;
 				}
+				
 			}
 		}
 		
 		//req.setAttribute("message", fileName + " File uploaded successfully!");
-		getServletContext().getRequestDispatcher("/1.php").forward(req, resp);
-	}
 
-	/**
-	 * Utility method to get file name from HTTP header content-disposition
-	 */
-	private String getFileName(Part part) {
-		String contentDisp = part.getHeader("content-disposition");
-		//System.out.println("content-disposition header= " + contentDisp);
-		String[] tokens = contentDisp.split(";");
-		for (String token : tokens) {
-			//System.err.println(token);
-			if (token.trim().startsWith("filename")) {
-				return token.substring(token.indexOf("=") + 2, token.length() - 1);
-			}
-		}
-		return "";
 	}
 }
