@@ -5,7 +5,9 @@ import javax.script.ScriptEngine;
 
 public abstract class RengineMethod {
 	
-	// classe abstraite qui sert de modèle aux trois méthodes de Rengine
+	/** 
+	 * classe abstraite qui sert de modèle aux trois méthodes de Rengine
+	 */
 	
 	String strAdresse;
 	String strVariable;
