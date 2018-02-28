@@ -12,20 +12,19 @@ import weka.core.Instances;
 import weka.gui.treevisualizer.PlaceNode2;
 import weka.gui.treevisualizer.TreeVisualizer;
 
-public class WekaCART {
+@SuppressWarnings("unused")
+public class WekaCART extends WekaMethod {
 	
-	/** à faire disparaitre dès qu'on aura les menus */
+	/** constructeur qui reprend les méthodes de WekaMethod
+	 *  et qui construit le .arff à partir de l'adresse du csv
+	 * @param strAdresseCsv
+	 * @param strVariable
+	 * @param propApp
+	 * @throws Exception
+	 */
 	
-	public static void main(String[] args) throws Exception {
-		CSV2Arff inst = CSV2Arff.getInstance();
-		
-		// On transforme son csv en arff (en modifiant la var à expliquer)
-		inst.transfo("./src/pages.csv", "./src/pages.arff","nbPages");
-		inst.transfo("./src/iris.csv", "./src/iris.arff","Species");
-		
-		// On lance le training 
-		training("./src/pages.arff","nbPages");
-		//training("./src/iris.arff","Species");
+	public WekaCART(String strAdresseCsv, String strVariable, String propApp) throws Exception {
+		super(strAdresseCsv, strVariable, propApp);
 	}
 	
 	/** gère la classification par arbre CART
@@ -37,7 +36,7 @@ public class WekaCART {
 	 * - une JFrame contenant l'arbre
 	 */
 	
-	public static void training(String patharff, String varY) throws Exception {
+	public static void training() throws Exception {
 		
 	     // J48 est la classe qui correspond à la classification des arbres CART
 	     J48 cls = new J48();
@@ -81,7 +80,7 @@ public class WekaCART {
 	     // Puis la précision
 	     System.out.println(eval.pctCorrect());
 	     
-	
+	     /*
 	     // Puis on cherche à afficher l'arbre obtenu dans une JFrame
 	     final JFrame jf = new JFrame("Weka Classifier Tree : " + patharff);
 	     
@@ -101,5 +100,6 @@ public class WekaCART {
 	     // enfin, on la rend visible
 	     jf.setVisible(true);
 	     tv.fitToScreen();
+	     */
 	  }
 }

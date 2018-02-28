@@ -8,23 +8,20 @@ import weka.classifiers.Evaluation;
 import weka.classifiers.functions.SMO;
 import weka.core.Instances;
 
-public class WekaSVM {
+public class WekaSVM extends WekaMethod {
 
+	/** constructeur qui reprend les méthodes de WekaMethod
+	 *  et qui construit le .arff à partir de l'adresse du csv
+	 * @param strAdresseCsv
+	 * @param strVariable
+	 * @param propApp
+	 * @throws Exception
+	 */
 	
-	/** à faire disparaitre dès qu'on aura les menus */
-	
-	public static void main(String[] args) throws Exception {
-		CSV2Arff inst = CSV2Arff.getInstance();
-		
-		// On transforme son csv en arff (en modifiant la var à expliquer)
-		inst.transfo("./src/pages.csv", "./src/pages.arff","nbPages");
-		inst.transfo("./src/iris.csv", "./src/iris.arff","Species");
-		
-		// On lance le training 
-		training("./src/pages.arff","nbPages");
-		training("./src/iris.arff","Species");
+	public WekaSVM(String strAdresseCsv, String strVariable, String propApp) throws Exception {
+		super(strAdresseCsv, strVariable, propApp);
 	}
-	
+
 	/** gère la classification par svm
 	 * en entrée :
 	 * - le chemin du fichier .arff
@@ -33,7 +30,7 @@ public class WekaSVM {
 	 * - le résumé du modèle utilisé, comprenant la précision du modèle
 	 */
 	
-	public static void training(String patharff, String varY) throws Exception {
+	public static void training() throws Exception {
 		
 	     // SMO est la classe qui gère les support vector machine
 	     SMO cls = new SMO();

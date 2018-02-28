@@ -9,20 +9,18 @@ import weka.classifiers.Evaluation;
 import weka.core.Instances;
 import weka.classifiers.trees.RandomForest;
 
-public class WekaRandomForest {
+public class WekaRandomForest extends WekaMethod {
 	
-	/** à faire disparaitre dès qu'on aura les menus */
+	/** constructeur qui reprend les méthodes de WekaMethod
+	 *  et qui construit le .arff à partir de l'adresse du csv
+	 * @param strAdresseCsv
+	 * @param strVariable
+	 * @param propApp
+	 * @throws Exception
+	 */
 	
-	public static void main(String[] args) throws Exception {
-		CSV2Arff inst = CSV2Arff.getInstance();
-		
-		// On transforme son csv en arff (en modifiant la var à expliquer)
-		inst.transfo("./src/pages.csv", "./src/pages.arff","nbPages");
-		inst.transfo("./src/iris.csv", "./src/iris.arff","Species");
-		
-		// On lance le training 
-		training("./src/pages.arff","nbPages");
-		training("./src/iris.arff","Species");
+	public WekaRandomForest(String strAdresseCsv, String strVariable, String propApp) throws Exception {
+		super(strAdresseCsv, strVariable, propApp);
 	}
 	
 	/** gère la classification par rf
@@ -34,7 +32,7 @@ public class WekaRandomForest {
 	 */
 	
 	@SuppressWarnings("resource")
-	public static void training(String patharff, String varY) throws Exception {
+	public static void training() throws Exception {
 		
 	     // RandomForest est la classe qui gère les randomForest
 	     RandomForest cls = new RandomForest();
