@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import weka.CSV2Arff;
-import weka.WekaTraining;
+import weka.WekaCART;
 import weka.classifiers.trees.J48;
 import weka.core.Instances;
 import weka.core.converters.ArffSaver;
@@ -76,7 +76,7 @@ public class MyServlet extends HttpServlet {
 		}
 		
 		
-		WekaTraining wekaTrainer = new WekaTraining();
+		WekaCART wekaTrainer = new WekaCART();
 		
 		
 		try {
