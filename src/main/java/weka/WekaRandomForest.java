@@ -62,8 +62,11 @@ public class WekaRandomForest extends WekaMethod {
 	     data.setClassIndex(columnY);
 	     
 	     // on crée les éch. d'app et de test
-	     Instances train = randData.trainCV(5, 0);
-	     Instances test = randData.testCV(5, 0);
+	     double prop = Double.parseDouble(propApp);
+	     int trainSize = (int) Math.floor(randData.numInstances()*prop);
+	     int testSize = randData.numInstances() - trainSize;
+	     Instances train = new Instances(randData, 0, trainSize);
+	     Instances test = new Instances(randData, trainSize, testSize);
 	     
 	     System.out.println("\n" + patharff + "\n");
 	     

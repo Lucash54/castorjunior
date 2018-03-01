@@ -45,14 +45,17 @@ public class WekaSVM extends WekaMethod {
 	     //On récupère le numéro de colonne de la variable à expliquer
 	     int columnY = data.attribute(varY).index();
 	     
-	     // on crée une copie des données
+	     // on crée une copie des données pour les mélanger
 	     Instances randData = new Instances(data); 
 	     randData.randomize(rand);
 	     data.setClassIndex(columnY);
 	     
 	     // on crée les éch. d'app et de test
-	     Instances train = randData.trainCV(5, 0);
-	     Instances test = randData.testCV(5, 0);
+	     double prop = Double.parseDouble(propApp);
+	     int trainSize = (int) Math.floor(randData.numInstances()*prop);
+	     int testSize = randData.numInstances() - trainSize;
+	     Instances train = new Instances(randData, 0, trainSize);
+	     Instances test = new Instances(randData, trainSize, testSize);
 	     
 	     System.out.println("\n" + patharff + "\n");
 	     

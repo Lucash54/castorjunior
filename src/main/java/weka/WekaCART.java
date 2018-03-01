@@ -1,15 +1,35 @@
 package weka;
  
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
+import java.awt.image.ImageProducer;
+import java.awt.image.RenderedImage;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileReader;
 import java.util.Random;
+
+import javax.imageio.ImageIO;
+import javax.imageio.ImageWriter;
+import javax.imageio.spi.ImageOutputStreamSpi;
+import javax.imageio.stream.ImageOutputStream;
+import javax.imageio.stream.ImageOutputStreamImpl;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import org.renjin.gnur.api.Graphics;
 
 import weka.classifiers.*;
 import weka.classifiers.trees.J48;
 import weka.core.Instances;
+import weka.gui.graphvisualizer.GraphVisualizer;
 import weka.gui.treevisualizer.PlaceNode2;
+import weka.gui.treevisualizer.TreeDisplayListener;
 import weka.gui.treevisualizer.TreeVisualizer;
 
 @SuppressWarnings("unused")
@@ -57,8 +77,11 @@ public class WekaCART extends WekaMethod {
 	     data.setClassIndex(columnY);
 	     
 	     // on crée les éch. d'app et de test
-	     Instances train = randData.trainCV(5, 0);
-	     Instances test = randData.testCV(5, 0);
+	     double prop = Double.parseDouble(propApp);
+	     int trainSize = (int) Math.floor(randData.numInstances()*prop);
+	     int testSize = randData.numInstances() - trainSize;
+	     Instances train = new Instances(randData, 0, trainSize);
+	     Instances test = new Instances(randData, trainSize, testSize);
 	     
 	     System.out.println("L'ensemble d'apprentissage dénombre " + train.numInstances() + " individus");
 	     System.out.println("L'ensemble de test dénombre " + test.numInstances() + " individus");     
@@ -79,16 +102,40 @@ public class WekaCART extends WekaMethod {
 	     
 	     // Puis la précision
 	     System.out.println(eval.pctCorrect());
+	     System.out.println(cls.graph());
+	     TreeVisualizer tv = new TreeVisualizer(null,cls.graph(),new PlaceNode2());
+	     GraphVisualizer graphe = new GraphVisualizer();
+	     Image imageArbre = tv.createImage(1000, 1000);
 	     
-	     /*
-	     // Puis on cherche à afficher l'arbre obtenu dans une JFrame
+	     JPanel jp = new JPanel();
+	     jp.setLayout(new BorderLayout());
+	     jp.setSize(1000, 1000);
+	     jp.add(tv, BorderLayout.CENTER);
+	     
+	     BufferedImage bi = new BufferedImage(jp.getSize().height, jp.getSize().width, BufferedImage.TYPE_INT_ARGB); 
+	     Graphics2D g = bi.createGraphics();
+	     jp.setVisible(true);
+	     jp.paint(g);
+	     tv.printAll(g);
+	     g.dispose();
+	     try{
+	    	 ImageIO.write(bi,"png",new File("./src/test.png"));
+	     }
+	     catch (Exception e) {}
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		// Puis on cherche à afficher l'arbre obtenu dans une JFrame
 	     final JFrame jf = new JFrame("Weka Classifier Tree : " + patharff);
-	     
+	    
 	     // On définit les options de la fenêtre, puis on insère le graphique relatif à l'arbre CART
 	     jf.setSize(1800,1000);
-	     jf.getContentPane().setLayout(new BorderLayout());
-	     TreeVisualizer tv = new TreeVisualizer(null,cls.graph(),new PlaceNode2());
-	     jf.getContentPane().add(tv, BorderLayout.CENTER);
+	     jf.setContentPane(jp);
 	     
 	     // pour pouvoir fermer la fenêtre
 	     jf.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -98,8 +145,8 @@ public class WekaCART extends WekaMethod {
 	     });
 	     
 	     // enfin, on la rend visible
-	     jf.setVisible(true);
-	     tv.fitToScreen();
-	     */
+	     //jf.setVisible(true);
+	     //tv.fitToScreen();
 	  }
+	
 }
