@@ -15,5 +15,5 @@ public abstract class SparkMLMethod {
 		this.testData = testData;
 	}
 	
-	public abstract void run();
+	public abstract double run();
 }

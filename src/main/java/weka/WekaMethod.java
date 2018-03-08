@@ -9,10 +9,10 @@ public abstract class WekaMethod {
 	String strAdresseCsv;
 	static String patharff;
 	static String varY;
-	String propApp;
+	double propApp;
 	
 	@SuppressWarnings("static-access")
-	public WekaMethod(String strAdresseCsv, String strVariable, String propApp) throws Exception {
+	public WekaMethod(String strAdresseCsv, String strVariable, double propApp) throws Exception {
 		
 		this.strAdresseCsv = strAdresseCsv;
 		this.varY = strVariable;
@@ -28,6 +28,6 @@ public abstract class WekaMethod {
 		inst.transfo(strAdresseCsv,this.patharff,this.varY);
 	}
 	
-	public abstract void run() throws Exception;
+	public abstract double run() throws Exception;
 	
 }

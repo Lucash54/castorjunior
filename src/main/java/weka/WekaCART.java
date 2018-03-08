@@ -43,7 +43,7 @@ public class WekaCART extends WekaMethod {
 	 * @throws Exception
 	 */
 	
-	public WekaCART(String strAdresseCsv, String strVariable, String propApp) throws Exception {
+	public WekaCART(String strAdresseCsv, String strVariable, double propApp) throws Exception {
 		super(strAdresseCsv, strVariable, propApp);
 	}
 	
@@ -54,9 +54,10 @@ public class WekaCART extends WekaMethod {
 	 * en sortie console:
 	 * - le résumé du modèle CART utilisé, comprenant la précision du modèle
 	 * - une JFrame contenant l'arbre
+	 * @return 
 	 */
 	
-	public void run() throws Exception {
+	public double run() throws Exception {
 		
 	     // J48 est la classe qui correspond à la classification des arbres CART
 	     J48 cls = new J48();
@@ -77,7 +78,7 @@ public class WekaCART extends WekaMethod {
 	     data.setClassIndex(columnY);
 	     
 	     // on crée les éch. d'app et de test
-	     double prop = Double.parseDouble(propApp);
+	     double prop = propApp;
 	     int trainSize = (int) Math.floor(randData.numInstances()*prop);
 	     int testSize = randData.numInstances() - trainSize;
 	     Instances train = new Instances(randData, 0, trainSize);
@@ -101,7 +102,8 @@ public class WekaCART extends WekaMethod {
 	     System.out.println(eval.toSummaryString("\nResults\n======\n", false));
 	     
 	     // Puis la précision
-	     System.out.println(eval.pctCorrect());
+	     double accuracy = Math.round(eval.pctCorrect()*10.0)/1000.0;
+	     System.out.println("Accuracy : "+ accuracy);
 	     System.out.println(cls.graph());
 	     TreeVisualizer tv = new TreeVisualizer(null,cls.graph(),new PlaceNode2());
 	     GraphVisualizer graphe = new GraphVisualizer();
@@ -125,11 +127,6 @@ public class WekaCART extends WekaMethod {
 		 
 		 
 		 
-		 
-		 
-		 
-		 
-		 
 		// Puis on cherche à afficher l'arbre obtenu dans une JFrame
 	     final JFrame jf = new JFrame("Weka Classifier Tree : " + patharff);
 	    
@@ -145,8 +142,9 @@ public class WekaCART extends WekaMethod {
 	     });
 	     
 	     // enfin, on la rend visible
-	     //jf.setVisible(true);
-	     //tv.fitToScreen();
+	     jf.setVisible(true);
+	     tv.fitToScreen();
+		return accuracy;
 	  }
 	
 }

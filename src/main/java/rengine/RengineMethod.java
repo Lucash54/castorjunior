@@ -11,16 +11,16 @@ public abstract class RengineMethod {
 	
 	String strAdresse;
 	String strVariable;
-	String propApp;
+	double propApp;
 	ScriptEngine engine;
 	
-	public RengineMethod(String strAdresse, String strVariable, String propApp, ScriptEngine engine) {
+	public RengineMethod(String strAdresse, String strVariable, double propApp, ScriptEngine engine) {
 		this.strAdresse = strAdresse;
 		this.strVariable = strVariable;
 		this.propApp = propApp;
 		this.engine = engine;
 	}
 	
-	public abstract void run();
+	public abstract double run();
 	
 }

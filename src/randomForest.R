@@ -28,4 +28,4 @@ accuracy <- 0
 "La précision vaut la trace de la matrice de confusion divisée par le nombre d'individus classés, i-e la longueur de l'échantillon de test"
 for(i in 1:taille){accuracy <- accuracy + conf[i,i]/long_test}
 "accuracy = "
-accuracy
+print(accuracy)

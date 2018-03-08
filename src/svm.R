@@ -22,4 +22,4 @@ sv <- svm(var~., data=csv, subset=id_app)
 "On affiche les valeurs prédites"
 pred <- predict(sv,base_test)
 "Puis on calcule le taux de bien classés, l'accuracy vaut :"
-mean(pred==base_test$var)
+print(mean(pred==base_test$var))

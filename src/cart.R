@@ -22,4 +22,4 @@ ind <- c()
 classe <- c()
 for(i in 1:nrow(pred)){ind[i] = which.max(pred[i,]); classe[i]=colnames(pred)[ind[i]]}
 "Et on calcule l'accuracy, qui vaut : "
-mean(classe==base_test$var)
+print(mean(classe==base_test$var))
