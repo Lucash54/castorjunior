@@ -10,16 +10,19 @@ public class WekaMain extends Library{
 		super(strAdresse, strVariable, propApp, algo, nbTrees);
 		try {
 			if(algo.equals("c")) {
+				// Arbre de Classification
 				System.out.println("Cart choisi!");
 				wmeth = new WekaCART(strAdresse, strVariable, propApp);
 			}
 
 			if(algo.equals("r")) {
+				// RandomForest
 				System.out.println("RandomForest choisi!");
 				wmeth = new WekaRandomForest(strAdresse, strVariable, propApp, nbTrees);
 			}
 
 			if(algo.equals("s")) {
+				// SVM
 				System.out.println("SVM choisi!");
 				wmeth = new WekaSVM(strAdresse, strVariable, propApp);
 			}		
@@ -30,6 +33,7 @@ public class WekaMain extends Library{
 	}
 
 	public static void main(String[] args) throws Exception {
+		System.out.println("Vous utilisez la librairie Weka.");
 		Console console = new Console();
 		console.inputLibrary();
 		

@@ -33,7 +33,6 @@ public class WekaRandomForest extends WekaMethod {
 	 * @return 
 	 */
 
-	@SuppressWarnings("resource")
 	public double run() throws Exception {
 
 		// RandomForest est la classe qui gère les randomForest

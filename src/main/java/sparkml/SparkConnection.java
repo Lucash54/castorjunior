@@ -5,8 +5,11 @@ package sparkml;
 
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.SparkSession ;
-
 import org.apache.spark.SparkConf;
+
+/**
+ * Cette classe permer d'ourir une connexion à spark
+ */
 
 public class SparkConnection {
 

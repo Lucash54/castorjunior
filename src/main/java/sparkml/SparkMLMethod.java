@@ -3,7 +3,9 @@ package sparkml;
 import org.apache.spark.ml.feature.StringIndexerModel;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
-
+/**
+ * Cette classe regroupe les méthodes de la librairie SparkML
+ */
 public abstract class SparkMLMethod {
 	StringIndexerModel siModel;
 	Dataset<Row> trainingData;

@@ -4,16 +4,9 @@ import Main.Console;
 import Main.Library;
 
 /**
- * Cette classe SparkML permet de calculer, grâce à 3 méthodes (arbre de classification, random forest et svm),
- * l'accuracy du modèle sur les données.
- *
- * Consignes : Le fichier est un csv. Les variables explicatives peuvent être numériques ou booléennes.
- * La première colonne est un identifiant (inutile pour les calculs).
- * Pour le svm, la variable à expliquer doit être binaire.
- * Les noms de variables ne doivent pas contenir de point.
+ * Il a fallut séparer cette classe en SparkML et RunnableSparkML, à cause de problème avec la sériabilisation de certaines méthodes.
+ * Ici, on crée une instance de SparkML avec les données de l'utilisateur et on fait les calculs dans RunnableSparkML
  */
-
-
 
 public class SparkML extends Library{
 
@@ -38,6 +31,7 @@ public class SparkML extends Library{
 
 
 	public static void main(String [] args) {
+		System.out.println("Vous utilisez la librairie SparkML.");
 		Console console = new Console();
 		console.inputLibrary();
 		

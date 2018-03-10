@@ -18,7 +18,6 @@ public class RengineRandomForest extends RengineMethod {
 		
 	}
 
-	@SuppressWarnings("resource")
 	public double run() {
 		double accuracy = 0;
 	    try{

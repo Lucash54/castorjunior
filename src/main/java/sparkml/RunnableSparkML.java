@@ -33,9 +33,11 @@ public class RunnableSparkML implements Serializable{
 	protected static int y = 0;
 
 	public double runSpark(SparkML sp) {
+		// On récupère les données
 		String strAdresse = sp.getStrAdresse();
 		String strVariable = sp.getStrVariable();
 		double propApp = sp.getPropApp();
+		
 		// On commence le travail en SparkML : On se connecte grâce à une SparkConnection
 		Logger.getLogger("org").setLevel(Level.ERROR);
 		Logger.getLogger("akka").setLevel(Level.ERROR);
@@ -149,22 +151,25 @@ public class RunnableSparkML implements Serializable{
 		Dataset<Row> trainingData = splits[0];
 		Dataset<Row> testData = splits[1];
 
-		
+		// On crée une SparkMLMethod et selon l'algo que l'utilisateur a choisit, on va dans la classe fille de SparkMLMethod correspondante
 		SparkMLMethod sm = null;
 		String algo = sp.getAlgo();
 		int nbTrees = sp.getNbTrees();
 		if(algo.equals("c")) {
 			// Arbre de Classification
+	    	System.out.println("Cart choisi!");
 			sm = new SparkMLDecisionTree(siModel, trainingData, testData);
 		}
 
 		if(algo.equals("r")) {
 			// RandomForest
+	    	System.out.println("RandomForest choisi!");
 			sm = new SparkMLRandomForest(siModel, trainingData, testData, nbTrees);
 		}
 
 		if(algo.equals("s")) {
 			// SVM
+	    	System.out.println("SVM choisi!");
 			sm = new SparkMLSVM(siModel, trainingData, testData);
 		}
 
