@@ -36,6 +36,8 @@ public class RengineCART extends RengineMethod {
 	    		output = outputWriter.toString();
 	    		// on évalue le code R associé à la ligne lue
 	    	}
+
+	    	// Permet de changer la virgule en point pour transformer le string en double
 	    	String output2 ="";
 	    	if(output.contains(",")) {
 	    		output2 = output.split(",")[0]+"."+output.split(",")[1];

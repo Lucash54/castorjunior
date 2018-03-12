@@ -19,9 +19,21 @@ public class Main implements Serializable {
 		
 		// On crée la library avec les données de l'utilisateur
 		Library l = new Library(console.strAdresse, console.strVariable, console.propApp, console.lib, console.algo, console.nbTrees);
-		
-		// On affiche l'accuracy
+
+		// Calcul de la moyenne :
+		/*double moy = 0;
+		for(int i=1; i<=10;i++) {
+			// On affiche l'accuracy
+			double accuracy = l.run();
+			System.out.println("");
+			System.out.println("Accuracy = "+ accuracy);
+			moy=moy+accuracy;
+		}
+		moy = moy / 10.0;
+		System.out.println("Moy : " + moy );*/
+
+		double accuracy = l.run();
 		System.out.println("");
-		System.out.println("Accuracy = "+ l.run());
+		System.out.println("Accuracy = "+ accuracy);
 	}
 }
