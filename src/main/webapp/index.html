@@ -1,14 +1,22 @@
 <meta charset="UTF-8">
 <html>
+<style type="text/css">
+#conteneur { overflow: hidden; }
+#conteneur div { margin:5px;width:30%;float:left; }
+</style>
+<title>Salut</title>
+
 <body>
 
 <FORM Method="POST" Action="/accueil" enctype="multipart/form-data">
 <p>
 
 <input type="file" name ="file" ><BR>
-Nom de la variable à expliquer<input type="text" name ="variabley"><BR><BR>
+Nom de la variable à expliquer<input type="text" name ="variabley">
 <BR>
 
+<div id="conteneur">
+    <div>
 
 <h1>Algo 1</h1>
 
@@ -20,8 +28,10 @@ Méthode : <SELECT name="method1" size="1"> <OPTION>SVM <OPTION>Random forest <O
 <input type="number" name ="pctapp1"> Pourcentage échantillon d'apprentissage<BR>
 <input type="number" name ="param1"> Paramètre supplémentaire<BR>
 
+    </div>
 
 
+    <div>
 
 <h1>Algo 2</h1>
 
@@ -34,7 +44,9 @@ Méthode : <SELECT name="method2" size="1"> <OPTION> <OPTION>SVM <OPTION>Random 
 <input type="number" name ="param2"> Paramètre supplémentaire<BR>
 
 
+    </div>
 
+    <div>
 
 
 <h1>Algo 3</h1>
@@ -46,7 +58,9 @@ Méthode : <SELECT name="method3" size="1"> <OPTION> <OPTION>SVM <OPTION>Random 
 
 <input type="number" name ="pctapp3"> Pourcentage échantillon d'apprentissage<BR>
 <input type="number" name ="param3"> Paramètre supplémentaire<BR>
+    </div>
 
+    </div>
 
 <INPUT type="submit" value="Send">
 </p>
