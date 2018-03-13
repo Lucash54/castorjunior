@@ -103,7 +103,8 @@ public class MyServlet extends HttpServlet {
 		 */
 		
 				loadFormData(req);
-				getServletContext().getRequestDispatcher("/1.php").forward(req, resp);
+				System.out.println(this.vary);
+				getServletContext().getRequestDispatcher("/res.html").forward(req, resp);
 	}
 
 	/**
