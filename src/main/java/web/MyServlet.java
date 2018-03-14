@@ -14,6 +14,8 @@ import javax.servlet.http.Part;
 
 import org.apache.commons.io.IOUtils;
 
+import Main.Library;
+
 @WebServlet(name = "mytest", urlPatterns = { "/accueil" })
 @MultipartConfig(fileSizeThreshold=1024*1024*10, 	// 10 MB 
 maxFileSize=1024*1024*50,      	// 50 MB
@@ -21,6 +23,7 @@ maxRequestSize=1024*1024*100)   	// 100 MB
 public class MyServlet extends HttpServlet {
 
 	private static final String UPLOAD_DIR = "/tmp";
+	public String path;
 	public String vary=null;
 	public String lib1=null;
 	public String method1=null;
@@ -103,7 +106,10 @@ public class MyServlet extends HttpServlet {
 		 */
 		
 				loadFormData(req);
+				double propApp1 = Double.parseDouble(this.pctapp1)/100.0;
+				Library l1 = new Library(this.path, this.vary, propApp1, this.lib1, this.method1, 0);
 				System.out.println(this.vary);
+				System.out.println(l1.run());
 				getServletContext().getRequestDispatcher("/res.html").forward(req, resp);
 	}
 
@@ -136,8 +142,9 @@ public class MyServlet extends HttpServlet {
 		if (!fileSaveDir.exists()) {
 			fileSaveDir.mkdirs();
 		}
-		System.out.println("Upload File Directory=" + fileSaveDir.getAbsolutePath());
-
+		this.path = fileSaveDir.getAbsolutePath()+ "/"+fileSaveDir.getName();
+		System.out.println("Upload File Directory=" + this.path);
+		
 		String fileName = null;
 		// Get all the parts from request and write it to the file on server
 		for (Part part : req.getParts()) {
