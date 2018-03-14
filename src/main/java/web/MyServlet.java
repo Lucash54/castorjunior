@@ -44,21 +44,6 @@ public class MyServlet extends HttpServlet {
 	}
 
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-		/*
-		 * PrintWriter p = new PrintWriter(resp.getOutputStream());
-		 * p.print("Hello world ENSAI"); p.flush();
-		 */
-
-		// CA MARCHE PAS MAIS ON LAISSE AU CAS OU
-
-		System.out.println("getget");
-		this.getServletContext().getRequestDispatcher("/index.html").forward(req, resp);
-
-	}
-
-	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		// resp.setContentType("/src/main/resources/myform.html");
@@ -107,9 +92,17 @@ public class MyServlet extends HttpServlet {
 		
 				loadFormData(req);
 				double propApp1 = Double.parseDouble(this.pctapp1)/100.0;
+				//double propApp2 = Double.parseDouble(this.pctapp2)/100.0;
+				//double propApp3 = Double.parseDouble(this.pctapp3)/100.0;
+				
 				Library l1 = new Library(this.path, this.vary, propApp1, this.lib1, this.method1, 0);
-				System.out.println(this.vary);
-				System.out.println(l1.run());
+				//Library l2 = new Library(this.path, this.vary, propApp2, this.lib2, this.method2, 0);
+				//Library l3 = new Library(this.path, this.vary, propApp3, this.lib3, this.method3, 0);
+				
+				double accuracy1 = l1.run();
+				//double accuracy2 = l2.run();
+				//double accuracy3 = l3.run();
+				System.out.println(accuracy1);
 				getServletContext().getRequestDispatcher("/res.html").forward(req, resp);
 	}
 
@@ -142,7 +135,7 @@ public class MyServlet extends HttpServlet {
 		if (!fileSaveDir.exists()) {
 			fileSaveDir.mkdirs();
 		}
-		this.path = fileSaveDir.getAbsolutePath()+ "/"+fileSaveDir.getName();
+		this.path = fileSaveDir.getAbsolutePath()+ "/iris.csv";
 		System.out.println("Upload File Directory=" + this.path);
 		
 		String fileName = null;
@@ -158,17 +151,17 @@ public class MyServlet extends HttpServlet {
 				if (part.getHeader("content-disposition").contains("variabley")) {
 					this.vary=theString;
 				}else if (part.getHeader("content-disposition").contains("lib1")) {
-					this.lib1=theString;
+					this.lib1=theString.substring(0, 1).toLowerCase();
 				}else if (part.getHeader("content-disposition").contains("lib2")) {
-					this.lib2=theString;
+					this.lib2=theString.substring(0, 1).toLowerCase();
 				}else if (part.getHeader("content-disposition").contains("lib3")) {
-					this.lib3=theString;
+					this.lib3=theString.substring(0, 1).toLowerCase();
 				}else if (part.getHeader("content-disposition").contains("method1")) {
-					this.method1=theString;
+					this.method1=theString.substring(0, 1).toLowerCase();;
 				}else if (part.getHeader("content-disposition").contains("method2")) {
-					this.method2=theString;
+					this.method2=theString.substring(0, 1).toLowerCase();
 				}else if (part.getHeader("content-disposition").contains("method3")) {
-					this.method3=theString;
+					this.method3=theString.substring(0, 1).toLowerCase();
 				}else if (part.getHeader("content-disposition").contains("pctapp1")) {
 					this.pctapp1=theString;
 				}else if (part.getHeader("content-disposition").contains("pctapp2")) {
