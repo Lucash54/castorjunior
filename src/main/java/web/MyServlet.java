@@ -42,7 +42,7 @@ public class MyServlet extends HttpServlet {
 	public void init() {
 
 	}
-
+	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// TODO Auto-generated method stub
@@ -103,7 +103,8 @@ public class MyServlet extends HttpServlet {
 				//double accuracy2 = l2.run();
 				//double accuracy3 = l3.run();
 				System.out.println(accuracy1);
-				getServletContext().getRequestDispatcher("/res.html").forward(req, resp);
+				req.setAttribute("res", accuracy1);
+				getServletContext().getRequestDispatcher("/res.jsp").forward(req, resp);
 	}
 
 	/**
@@ -153,15 +154,15 @@ public class MyServlet extends HttpServlet {
 				}else if (part.getHeader("content-disposition").contains("lib1")) {
 					this.lib1=theString.substring(0, 1).toLowerCase();
 				}else if (part.getHeader("content-disposition").contains("lib2")) {
-					this.lib2=theString.substring(0, 1).toLowerCase();
+					//this.lib2=theString.substring(0, 1).toLowerCase();
 				}else if (part.getHeader("content-disposition").contains("lib3")) {
-					this.lib3=theString.substring(0, 1).toLowerCase();
+					//this.lib3=theString.substring(0, 1).toLowerCase();
 				}else if (part.getHeader("content-disposition").contains("method1")) {
 					this.method1=theString.substring(0, 1).toLowerCase();;
 				}else if (part.getHeader("content-disposition").contains("method2")) {
-					this.method2=theString.substring(0, 1).toLowerCase();
+					//this.method2=theString.substring(0, 1).toLowerCase();
 				}else if (part.getHeader("content-disposition").contains("method3")) {
-					this.method3=theString.substring(0, 1).toLowerCase();
+					//this.method3=theString.substring(0, 1).toLowerCase();
 				}else if (part.getHeader("content-disposition").contains("pctapp1")) {
 					this.pctapp1=theString;
 				}else if (part.getHeader("content-disposition").contains("pctapp2")) {
