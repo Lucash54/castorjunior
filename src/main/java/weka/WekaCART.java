@@ -24,6 +24,10 @@ import javax.swing.JPanel;
 
 import org.renjin.gnur.api.Graphics;
 
+import guru.nidi.graphviz.engine.Format;
+import guru.nidi.graphviz.engine.Graphviz;
+import guru.nidi.graphviz.engine.GraphvizEngine;
+import guru.nidi.graphviz.model.Graph;
 import weka.classifiers.*;
 import weka.classifiers.trees.J48;
 import weka.core.Instances;
@@ -31,6 +35,8 @@ import weka.gui.graphvisualizer.GraphVisualizer;
 import weka.gui.treevisualizer.PlaceNode2;
 import weka.gui.treevisualizer.TreeDisplayListener;
 import weka.gui.treevisualizer.TreeVisualizer;
+
+import static guru.nidi.graphviz.model.Factory.*;
 
 @SuppressWarnings("unused")
 public class WekaCART extends WekaMethod {
@@ -104,46 +110,12 @@ public class WekaCART extends WekaMethod {
 	     // Puis la précision
 	     double accuracy = Math.round(eval.pctCorrect()*10.0)/1000.0;
 	     System.out.println("Accuracy : "+ accuracy);
-	     System.out.println(cls.graph());
+	     
 	     TreeVisualizer tv = new TreeVisualizer(null,cls.graph(),new PlaceNode2());
-	     GraphVisualizer graphe = new GraphVisualizer();
-	     Image imageArbre = tv.createImage(1000, 1000);
 	     
-	     JPanel jp = new JPanel();
-	     jp.setLayout(new BorderLayout());
-	     jp.setSize(1000, 1000);
-	     jp.add(tv, BorderLayout.CENTER);
-	     
-	     BufferedImage bi = new BufferedImage(jp.getSize().height, jp.getSize().width, BufferedImage.TYPE_INT_ARGB); 
-	     Graphics2D g = bi.createGraphics();
-	     jp.setVisible(true);
-	     jp.paint(g);
-	     tv.printAll(g);
-	     g.dispose();
-	     try{
-	    	 ImageIO.write(bi,"png",new File("./src/test.png"));
-	     }
-	     catch (Exception e) {}
-		 
-		 
-		 
-		// Puis on cherche à afficher l'arbre obtenu dans une JFrame
-	     final JFrame jf = new JFrame("Weka Classifier Tree : " + patharff);
+	     String nomGraphe = strAdresseCsv.substring(0, strAdresseCsv.length()-3);
+	     Graphviz.fromString(cls.graph()).width(500).height(500).render(Format.PNG).toFile(new File(nomGraphe +"png"));
 	    
-	     // On définit les options de la fenêtre, puis on insère le graphique relatif à l'arbre CART
-	     jf.setSize(1800,1000);
-	     jf.setContentPane(jp);
-	     
-	     // pour pouvoir fermer la fenêtre
-	     jf.addWindowListener(new java.awt.event.WindowAdapter() {
-	       public void windowClosing(java.awt.event.WindowEvent e) {
-	         jf.dispose();
-	       }
-	     });
-	     
-	     // enfin, on la rend visible
-	     jf.setVisible(true);
-	     tv.fitToScreen();
 		return accuracy;
 	  }
 	

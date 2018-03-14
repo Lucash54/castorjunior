@@ -82,7 +82,11 @@
 	    <version>RELEASE</version>
 	</dependency>
 	
-	
+	<dependency>
+    <groupId>guru.nidi</groupId>
+    <artifactId>graphviz-java</artifactId>
+    <version>0.2.3</version>
+</dependency>
 	    		<dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
