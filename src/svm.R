@@ -21,5 +21,9 @@ base_test <- csv[-id_app,]
 sv <- svm(var~., data=csv, subset=id_app)
 "On affiche les valeurs prédites"
 pred <- predict(sv,base_test)
+lab <- levels(as.factor(csv$var))
+conf <- matrix(0, nrow = length(lab), ncol = length(lab))
+for (i in 1:length(lab)){conf[i,] <- table(pred[base_test$var == lab[i]])}
+conf <- data.frame(conf)
 "Puis on calcule le taux de bien classés, l'accuracy vaut :"
 print(mean(pred==base_test$var))
