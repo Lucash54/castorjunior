@@ -6,7 +6,7 @@
 </style>
 <title>Salut</title>
 
-<body>
+<body onload="debut();">
 
 <FORM Method="POST" Action="/accueil" enctype="multipart/form-data">
 <p>
@@ -22,26 +22,28 @@ Nom de la variable à expliquer<input type="text" name ="variabley" required>
 
 Librairie : <SELECT name="lib1" size="1"> <OPTION>Weka <OPTION>SparkML <OPTION>Renjin </SELECT><BR>
 
-Méthode : <SELECT name="method1" size="1"> <OPTION>SVM <OPTION>Random forest <OPTION>CART </SELECT><BR>
+Méthode : <SELECT name="method1" size="1" id="method1" onchange="tree1();"> <OPTION>SVM <OPTION>Random forest <OPTION>CART </SELECT><BR>
 
 
 <input type="number" name ="pctapp1" required> Pourcentage échantillon d'apprentissage<BR>
-<input type="number" name ="param1" > Paramètre supplémentaire<BR>
+<input type="number" name ="param1" id="param1"> Nombre d'arbres<BR>
+<input type="number" name ="moy1" id="moy1" value = 1> Nombre de run pour calculer la moyenne <BR>
 
     </div>
 
 
     <div>
 
-<h1>Algo 2 <input type="checkbox" name ="algo2"> </h1>
+<h1>Algo 2 <input type="checkbox" name ="algo2" id="algo2" onClick="required2();"> </h1>
 
-Librairie : <SELECT name="lib2" size="1"> <OPTION> <OPTION>Weka <OPTION>SparkML <OPTION>Renjin </SELECT><BR>
+Librairie : <SELECT name="lib2" size="1" id = "lib2"> <OPTION> <OPTION>Weka <OPTION>SparkML <OPTION>Renjin </SELECT><BR>
 
-Méthode : <SELECT name="method2" size="1"> <OPTION> <OPTION>SVM <OPTION>Random forest <OPTION>CART </SELECT><BR>
+Méthode : <SELECT name="method2" size="1" id = "method2" onchange="tree2();"> <OPTION> <OPTION>SVM <OPTION>Random forest <OPTION>CART </SELECT><BR>
 
 
-<input type="number" name ="pctapp2"> Pourcentage échantillon d'apprentissage<BR>
-<input type="number" name ="param2"> Paramètre supplémentaire<BR>
+<input type="number" name ="pctapp2" id = "pctapp2"> Pourcentage échantillon d'apprentissage<BR>
+<input type="number" name ="param2" id="param2"> Nombre d'arbres<BR>
+<input type="number" name ="moy2" id="moy2" value = 1> Nombre de run pour calculer la moyenne <BR>
 
 
     </div>
@@ -49,15 +51,16 @@ Méthode : <SELECT name="method2" size="1"> <OPTION> <OPTION>SVM <OPTION>Random 
     <div>
 
 
-<h1>Algo 3 <input type="checkbox" name ="algo3"></h1>
+<h1>Algo 3 <input type="checkbox" name ="algo3" id="algo3" onClick="required3();"></h1>
 
-Librairie : <SELECT name="lib3" size="1"> <OPTION> <OPTION>Weka <OPTION>SparkML <OPTION>Renjin </SELECT><BR>
+Librairie : <SELECT name="lib3" size="1" id="lib3"> <OPTION> <OPTION>Weka <OPTION>SparkML <OPTION>Renjin </SELECT><BR>
 
-Méthode : <SELECT name="method3" size="1"> <OPTION> <OPTION>SVM <OPTION>Random forest <OPTION>CART </SELECT><BR>
+Méthode : <SELECT name="method3" size="1" id="method3" onchange="tree3();"> <OPTION> <OPTION>SVM <OPTION>Random forest <OPTION>CART </SELECT><BR>
 
 
-<input type="number" name ="pctapp3"> Pourcentage échantillon d'apprentissage<BR>
-<input type="number" name ="param3"> Paramètre supplémentaire<BR>
+<input type="number" name ="pctapp3" id="pctapp3"> Pourcentage échantillon d'apprentissage<BR>
+<input type="number" name ="param3" id="param3"> Nombre d'arbres<BR>
+<input type="number" name ="moy3" id="moy3" value = 1> Nombre de run pour calculer la moyenne <BR>
     </div>
 
     </div>
@@ -65,6 +68,77 @@ Méthode : <SELECT name="method3" size="1"> <OPTION> <OPTION>SVM <OPTION>Random 
 <INPUT type="submit" value="Send">
 </p>
 </FORM>
+
+<script>
+function required2(){
+	if(document.getElementById("algo2").checked==true){
+		document.getElementById("lib2").required = true;
+		document.getElementById("method2").required = true;
+		document.getElementById("pctapp2").required = true;
+		if(document.getElementById("method2").value=="Random forest"){
+			document.getElementById("param2").required = true;
+		}
+	}else{
+		document.getElementById("lib2").required = false;
+		document.getElementById("method2").required = false;
+		document.getElementById("pctapp2").required = false;
+		document.getElementById("param2").required = false;
+	}
+}
+
+function required3(){
+	if(document.getElementById("algo3").checked==true){
+		document.getElementById("lib3").required = true;
+		document.getElementById("method3").required = true;
+		document.getElementById("pctapp3").required = true;
+		if(document.getElementById("method3").value=="Random forest"){
+			document.getElementById("param3").required = true;
+		}
+	}else{
+		document.getElementById("lib3").required = false;
+		document.getElementById("method3").required = false;
+		document.getElementById("pctapp3").required = false;
+		document.getElementById("param3").required = false;
+	}
+}
+
+function debut(){
+	tree1();
+	tree2();
+	required2();
+	tree3();
+	required3();
+}
+
+
+function tree1(){
+	if(document.getElementById("method1").value=="Random forest"){
+		document.getElementById("param1").required = true;
+	}else{
+		document.getElementById("param1").required = false;
+	}
+}
+
+function tree2(){
+	if(document.getElementById("algo2").checked==true){
+		if(document.getElementById("method2").value=="Random forest"){
+			document.getElementById("param2").required = true;
+		}else{
+			document.getElementById("param2").required = false;
+		}
+	}
+}
+
+function tree3(){
+	if(document.getElementById("algo3").checked==true){
+		if(document.getElementById("method3").value=="Random forest"){
+			document.getElementById("param3").required = true;
+		}else{
+			document.getElementById("param3").required = false;
+		}
+	}
+}
+</script>
 
 </body>
 </html>

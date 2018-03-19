@@ -16,153 +16,153 @@ import org.apache.commons.io.IOUtils;
 
 import Main.Library;
 
+@SuppressWarnings("serial")
 @WebServlet(name = "mytest", urlPatterns = { "/accueil" })
 @MultipartConfig(fileSizeThreshold=1024*1024*10, 	// 10 MB 
 maxFileSize=1024*1024*50,      	// 50 MB
 maxRequestSize=1024*1024*100)   	// 100 MB
 public class MyServlet extends HttpServlet {
 
+	public static String idAlgo = "1";
 	private static final String UPLOAD_DIR = "/tmp";
 	public String path;
+	public String fileName;
 	public String vary=null;
 	public String lib1=null;
 	public String method1=null;
 	public String pctapp1= null;
 	public String param1= null;
+	public int moy1;
+	public boolean algo2;
 	public String lib2=null;
 	public String method2=null;
 	public String pctapp2= null;
 	public String param2= null;
+	public int moy2;
+	public boolean algo3;
 	public String lib3=null;
 	public String method3=null;
 	public String pctapp3= null;
 	public String param3= null;
+	public int moy3;
 
-
-	public void init() {
-
-	}
-	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		// resp.setContentType("/src/main/resources/myform.html");
-		// CA MARCHE PAS MAIS ON LAISSE AU CAS OU
-		/*
-		 * System.out.println("debut post");
-		 * 
-		 * String path = req.getParameter("chemin");
-		 * 
-		 * Enumeration paramaterNames = req.getParameterNames();
-		 * while(paramaterNames.hasMoreElements() ) {
-		 * System.out.println(paramaterNames.nextElement()); }
-		 * 
-		 * System.out.println(path);
-		 * 
-		 * 
-		 * 
-		 * CSV2Arff transformateur = new CSV2Arff();
-		 * 
-		 * String aux = path.substring(0, path.length()-3)+"arff";
-		 * 
-		 * System.out.println(aux);
-		 * 
-		 * /*BufferedReader br = new BufferedReader(new FileReader(path));
-		 * 
-		 * String test = (br.readLine()); System.out.println(test);
-		 * 
-		 * 
-		 * try { transformateur.transfo(path,aux); } catch (Exception e1) { // TODO
-		 * Auto-generated catch block e1.printStackTrace(); }
-		 * 
-		 * 
-		 * WekaTraining wekaTrainer = new WekaTraining();
-		 * 
-		 * 
-		 * try { wekaTrainer.training(aux); } catch (Exception e1) { // TODO
-		 * Auto-generated catch block e1.printStackTrace(); }
-		 * 
-		 * System.out.println("finpost");
-		 * 
-		 * 
-		 * this.getServletContext().getRequestDispatcher("/myform.html").forward(req,
-		 * resp);
-		 * 
-		 */
+		/* La méthode doPost est appelée lorsqu'on confirme l'envoi du formulaire sur la page web*/
 		
-				loadFormData(req);
-				double propApp1 = Double.parseDouble(this.pctapp1)/100.0;
-				//double propApp2 = Double.parseDouble(this.pctapp2)/100.0;
-				//double propApp3 = Double.parseDouble(this.pctapp3)/100.0;
-				
-				Library l1 = new Library(this.path, this.vary, propApp1, this.lib1, this.method1, 0);
-				//Library l2 = new Library(this.path, this.vary, propApp2, this.lib2, this.method2, 0);
-				//Library l3 = new Library(this.path, this.vary, propApp3, this.lib3, this.method3, 0);
-				
-				double accuracy1 = l1.run();
-				//double accuracy2 = l2.run();
-				//double accuracy3 = l3.run();
-				System.out.println(accuracy1);
-				req.setAttribute("res", accuracy1);
-				getServletContext().getRequestDispatcher("/res.jsp").forward(req, resp);
+		/* On récupère les données*/
+		loadFormData(req);
+
+		/*idAlgo permet d'avoir 3 images dans la page*/
+		idAlgo="1";
+		/* On calcule l'accuracy du premier algorithme*/
+		double accuracy1 = calcul(this.pctapp1,this.lib1,this.method1,this.param1,this.moy1);
+		/* On ajoute l'accuracy dans les attributs de la page que l'on renvoit*/
+		req.setAttribute("res1", accuracy1);
+		/*On ajoute l'image du CART pour Weka*/
+		if(lib1.equals("Weka") && method1.equals("CART") && this.moy1 == 1) {
+			String image = "/tmp/"+fileName.substring(0,fileName.length()-4)+idAlgo+".png";
+			req.setAttribute("image1", image);
+		}
+		/*Pour l'affichage, on garde les paramètres*/
+		req.setAttribute("lib1", this.lib1);
+		req.setAttribute("method1", this.method1);
+		req.setAttribute("pct1", this.pctapp1);
+		req.setAttribute("tree1", this.param1);
+		req.setAttribute("moy1", this.moy1);
+
+		idAlgo="2";
+		/* On fait la même chose avec le deuxième algo (si la case est cochée)*/
+		if(!(req.getParameterValues("algo2")==null)) {
+			double accuracy2 = calcul(this.pctapp2,this.lib2,this.method2,this.param2,this.moy2);
+			req.setAttribute("res2", accuracy2);	
+			if(lib2.equals("Weka") && method2.equals("CART") && this.moy2 == 1) {
+				String image = "/tmp/"+fileName.substring(0,fileName.length()-4)+idAlgo+".png";
+				req.setAttribute("image2", image);
+			}
+			req.setAttribute("lib2", this.lib2);
+			req.setAttribute("method2", this.method2);
+			req.setAttribute("pct2", this.pctapp2);
+			req.setAttribute("tree2", this.param2);
+			req.setAttribute("moy2", this.moy2);
+		}
+
+		idAlgo="3";
+		/* On fait la même chose avec le deuxième algo (si la case est cochée)*/
+		if(!(req.getParameterValues("algo3")==null)) {
+			double accuracy3 = calcul(this.pctapp3,this.lib3,this.method3,this.param3,this.moy3);
+			req.setAttribute("res3", accuracy3);	
+			if(lib3.equals("Weka") && method3.equals("CART") && this.moy3 == 1) {
+				String image = "/tmp/"+fileName.substring(0,fileName.length()-4)+idAlgo+".png";
+				req.setAttribute("image3", image);
+			}
+			req.setAttribute("lib3", this.lib3);
+			req.setAttribute("method3", this.method3);
+			req.setAttribute("pct3", this.pctapp3);
+			req.setAttribute("tree3", this.param3);
+			req.setAttribute("moy3", this.moy3);
+		}
+		
+		/*Cela nous amène sur la page des réponses*/
+		getServletContext().getRequestDispatcher("/res.jsp").forward(req, resp);
 	}
 
 	/**
-	 * Utility method to get file name from HTTP header content-disposition
+	 * Récupérer le nom du fichier csv
 	 */
 	private String getFileName(Part part) {
 		String contentDisp = part.getHeader("content-disposition");
-		//System.out.println("content-disposition header= " + contentDisp);
 		String[] tokens = contentDisp.split(";");
 		for (String token : tokens) {
-			//System.err.println(token);
 			if (token.trim().startsWith("filename")) {
 				return token.substring(token.indexOf("=") + 2, token.length() - 1);
 			}
 		}
 		return "";
 	}
-	
-	
+
+	/*
+	 * Récupère les données inscrites dans le formulaire
+	 */
 	private void loadFormData(HttpServletRequest req) throws IOException, ServletException {
 
-		// gets absolute path of the web application
+		/*Chemin de l'appli*/
 		String applicationPath = req.getServletContext().getRealPath("");
-		// constructs path of the directory reqto save uploaded file
-		String uploadFilePath = applicationPath +"/../.." + File.separator + UPLOAD_DIR;
-
-		// creates the save directory if it does not exists
+		/*Chemin du csv*/
+		String uploadFilePath = applicationPath +/*"/../.." +*/ File.separator + UPLOAD_DIR;
+		/*Crée un dossier pour télécharger les fichiers csv*/
 		File fileSaveDir = new File(uploadFilePath);
 		if (!fileSaveDir.exists()) {
 			fileSaveDir.mkdirs();
 		}
-		this.path = fileSaveDir.getAbsolutePath()+ "/iris.csv";
-		System.out.println("Upload File Directory=" + this.path);
-		
-		String fileName = null;
+		String aux = null;
 		// Get all the parts from request and write it to the file on server
 		for (Part part : req.getParts()) {
-			fileName = getFileName(part);
-			if (!"".equals(fileName))
-				part.write(uploadFilePath + File.separator + fileName);
-			else {
+			aux = getFileName(part);
+			if (!"".equals(aux)) {
+				/*Crée le csv dans le dossier*/
+				this.fileName=aux;
+				part.write(uploadFilePath + File.separator + this.fileName);
+				this.path = fileSaveDir.getAbsolutePath()+"/"+this.fileName;
+			}else {
+				/*Récupère toutes les données du formulaire*/
 				StringWriter writer = new StringWriter();
 				IOUtils.copy(part.getInputStream(), writer);
 				String theString = writer.toString();
 				if (part.getHeader("content-disposition").contains("variabley")) {
 					this.vary=theString;
 				}else if (part.getHeader("content-disposition").contains("lib1")) {
-					this.lib1=theString.substring(0, 1).toLowerCase();
+					this.lib1=theString;
 				}else if (part.getHeader("content-disposition").contains("lib2")) {
-					//this.lib2=theString.substring(0, 1).toLowerCase();
+					this.lib2=theString;
 				}else if (part.getHeader("content-disposition").contains("lib3")) {
-					//this.lib3=theString.substring(0, 1).toLowerCase();
+					this.lib3=theString;
 				}else if (part.getHeader("content-disposition").contains("method1")) {
-					this.method1=theString.substring(0, 1).toLowerCase();;
+					this.method1=theString;
 				}else if (part.getHeader("content-disposition").contains("method2")) {
-					//this.method2=theString.substring(0, 1).toLowerCase();
+					this.method2=theString;
 				}else if (part.getHeader("content-disposition").contains("method3")) {
-					//this.method3=theString.substring(0, 1).toLowerCase();
+					this.method3=theString;
 				}else if (part.getHeader("content-disposition").contains("pctapp1")) {
 					this.pctapp1=theString;
 				}else if (part.getHeader("content-disposition").contains("pctapp2")) {
@@ -175,12 +175,38 @@ public class MyServlet extends HttpServlet {
 					this.param2=theString;
 				}else if (part.getHeader("content-disposition").contains("param3")) {
 					this.param3=theString;
+				}else if (part.getHeader("content-disposition").contains("moy1")) {
+					this.moy1=Integer.parseInt(theString);
+				}else if (part.getHeader("content-disposition").contains("moy2")) {
+					this.moy2=Integer.parseInt(theString);
+				}else if (part.getHeader("content-disposition").contains("moy3")) {
+					this.moy3=Integer.parseInt(theString);
 				}
-				
+
 			}
 		}
-		
-		//req.setAttribute("message", fileName + " File uploaded successfully!");
-
 	}
+
+	/*
+	 * Calcule l'accuracy des algo 
+	 */
+	private double calcul(String proportion, String librairie, String methode, String arbres,int moyenne) {
+		double accuracy = 0;
+		for(int i=1;i<=moyenne;i++) {
+			/*avoir la proportion entre 0 et 1*/
+			double propApp = Double.parseDouble(proportion)/100.0;
+			/*avoir un nombre d'arbres = 10 au cas où il y aurait un problème dans la suite*/
+			int nbtree=10;
+			if(!arbres.equals("")) {
+				nbtree=Integer.parseInt(arbres);
+			}
+			Library l = new Library(this.path, this.vary, propApp, librairie.substring(0, 1).toLowerCase(), methode.substring(0, 1).toLowerCase(), nbtree);
+			accuracy = accuracy + l.run();
+		}
+		accuracy=accuracy/moyenne;
+		accuracy=Math.round(accuracy*1000)/1000.0;
+		return(accuracy);
+	}
+
+
 }

@@ -27,7 +27,9 @@ import org.renjin.gnur.api.Graphics;
 import guru.nidi.graphviz.engine.Format;
 import guru.nidi.graphviz.engine.Graphviz;
 import guru.nidi.graphviz.engine.GraphvizEngine;
+import guru.nidi.graphviz.engine.GraphvizJdkEngine;
 import guru.nidi.graphviz.model.Graph;
+import web.MyServlet;
 import weka.classifiers.*;
 import weka.classifiers.trees.J48;
 import weka.core.Instances;
@@ -113,9 +115,10 @@ public class WekaCART extends WekaMethod {
 	     
 	     TreeVisualizer tv = new TreeVisualizer(null,cls.graph(),new PlaceNode2());
 	     
-	     String nomGraphe = strAdresseCsv.substring(0, strAdresseCsv.length()-3);
-	     Graphviz.fromString(cls.graph()).width(500).height(500).render(Format.PNG).toFile(new File(nomGraphe +"png"));
-	    
+	     String nomGraphe = strAdresseCsv.substring(0, strAdresseCsv.length()-4);
+	     Graphviz.useEngine(new GraphvizJdkEngine());
+	     File file = new File(nomGraphe + MyServlet.idAlgo+".png");
+	     Graphviz.fromString(cls.graph()).width(500).height(500).render(Format.PNG).toFile(new File(nomGraphe +MyServlet.idAlgo+".png"));
 		return accuracy;
 	  }
 	
