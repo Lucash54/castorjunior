@@ -114,7 +114,7 @@ public class WekaCART extends WekaMethod {
 	     System.out.println("Accuracy : "+ accuracy);
 	     
 	     TreeVisualizer tv = new TreeVisualizer(null,cls.graph(),new PlaceNode2());
-	     
+	     /* Enregistrement du graphe*/
 	     String nomGraphe = strAdresseCsv.substring(0, strAdresseCsv.length()-4);
 	     Graphviz.useEngine(new GraphvizJdkEngine());
 	     File file = new File(nomGraphe + MyServlet.idAlgo+".png");

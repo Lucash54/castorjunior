@@ -13,6 +13,8 @@ import java.io.StringWriter;
 import javax.imageio.ImageIO;
 import javax.script.ScriptEngine;
 
+import web.MyServlet;
+
 public class RengineSVM extends RengineMethod {
 
 	public RengineSVM(String strAdresse, String strVariable, double propApp, ScriptEngine engine) {
@@ -103,7 +105,8 @@ public class RengineSVM extends RengineMethod {
 	    	}
 	    	
 	    	// enfin, on écrit dans un fichier qui sera stocké, puis mis sur la page web
-	    	File outputfile = new File("./src/test.png");
+	    	String nomTableau = strAdresse.substring(0, strAdresse.length()-4);
+	    	File outputfile = new File(nomTableau+MyServlet.idAlgo+".png");
     	    ImageIO.write(img, "png", outputfile);
 	    	
 	    	// une fois le code exécuté, on ferme le buffer. L'accuracy est la dernière ligne affichée.

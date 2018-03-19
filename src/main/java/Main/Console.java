@@ -40,7 +40,7 @@ public class Console {
 		// Renseignerle chemin du csv 
 		p = Pattern.compile(".\\.csv$");
 		while(!p.matcher(this.strAdresse).find()) {
-			System.out.println("Veuillez saisir l'adresse du csv (par ex. ./src/pages.csv ou ./src/iris.csv). La première colonne doit être un identifiant :");
+			System.out.println("Veuillez saisir l'adresse du csv (par ex. ./src/main/webapp/tmp/pages.csv ou ./src/main/webapp/tmp/iris.csv). La première colonne doit être un identifiant :");
 			this.strAdresse = saisieUtilisateur.next();
 		}
 		

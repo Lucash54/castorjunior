@@ -59,8 +59,9 @@ public class MyServlet extends HttpServlet {
 		double accuracy1 = calcul(this.pctapp1,this.lib1,this.method1,this.param1,this.moy1);
 		/* On ajoute l'accuracy dans les attributs de la page que l'on renvoit*/
 		req.setAttribute("res1", accuracy1);
-		/*On ajoute l'image du CART pour Weka*/
-		if(lib1.equals("Weka") && method1.equals("CART") && this.moy1 == 1) {
+		/*On ajoute l'image du CART pour Weka ou SVm pour Renjin*/
+		boolean testImage = (lib1.equals("Weka") && method1.equals("CART")) || (lib1.equals("Renjin") && method1.equals("SVM")); 
+		if(testImage && this.moy1 == 1) {
 			String image = "/tmp/"+fileName.substring(0,fileName.length()-4)+idAlgo+".png";
 			req.setAttribute("image1", image);
 		}
@@ -75,8 +76,9 @@ public class MyServlet extends HttpServlet {
 		/* On fait la même chose avec le deuxième algo (si la case est cochée)*/
 		if(!(req.getParameterValues("algo2")==null)) {
 			double accuracy2 = calcul(this.pctapp2,this.lib2,this.method2,this.param2,this.moy2);
-			req.setAttribute("res2", accuracy2);	
-			if(lib2.equals("Weka") && method2.equals("CART") && this.moy2 == 1) {
+			req.setAttribute("res2", accuracy2);
+			testImage = (lib2.equals("Weka") && method2.equals("CART")) || (lib2.equals("Renjin") && method2.equals("SVM")); 	
+			if(testImage && this.moy2 == 1) {
 				String image = "/tmp/"+fileName.substring(0,fileName.length()-4)+idAlgo+".png";
 				req.setAttribute("image2", image);
 			}
@@ -92,7 +94,8 @@ public class MyServlet extends HttpServlet {
 		if(!(req.getParameterValues("algo3")==null)) {
 			double accuracy3 = calcul(this.pctapp3,this.lib3,this.method3,this.param3,this.moy3);
 			req.setAttribute("res3", accuracy3);	
-			if(lib3.equals("Weka") && method3.equals("CART") && this.moy3 == 1) {
+			testImage = (lib3.equals("Weka") && method3.equals("CART")) || (lib3.equals("Renjin") && method3.equals("SVM"));
+			if(testImage && this.moy3 == 1) {
 				String image = "/tmp/"+fileName.substring(0,fileName.length()-4)+idAlgo+".png";
 				req.setAttribute("image3", image);
 			}
