@@ -4,6 +4,12 @@
 <title>Results</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <style type="text/css">
+body {
+background-color: grey;
+background-image: url("castors2.png");
+background-repeat: no-repeat;
+background-position:center top;
+}
 #conteneur { overflow: hidden; }
 #conteneur div { margin:5px;width:30%;float:left; }
 </style>
