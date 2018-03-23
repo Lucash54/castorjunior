@@ -13,7 +13,7 @@ background-position:center top;
 
 </style>
 </head>
-<title>Salut</title>
+<title>B2BTesting</title>
 
 <body onload="debut();">
 
@@ -21,7 +21,7 @@ background-position:center top;
 <p>
 
 <input type="file" name ="file" required><BR>
-Nom de la variable à expliquer<input type="text" name ="variabley" required>
+Variable to explain <input type="text" name ="variabley" required>
 <BR>
 
 <div id="conteneur">
@@ -29,14 +29,14 @@ Nom de la variable à expliquer<input type="text" name ="variabley" required>
 
 <h1>Algo 1</h1>
 
-Librairie : <SELECT name="lib1" size="1"> <OPTION>Weka <OPTION>SparkML <OPTION>Renjin </SELECT><BR>
+Library : <SELECT name="lib1" size="1"> <OPTION>Weka <OPTION>SparkML <OPTION>Renjin </SELECT><BR>
 
-Méthode : <SELECT name="method1" size="1" id="method1" onchange="tree1();"> <OPTION>SVM <OPTION>Random forest <OPTION>CART </SELECT><BR>
+Method : <SELECT name="method1" size="1" id="method1" onchange="tree1();"> <OPTION>SVM <OPTION>Random forest <OPTION>CART </SELECT><BR>
 
 
-<input type="number" name ="pctapp1" required> Pourcentage échantillon d'apprentissage<BR>
-<input type="number" name ="param1" id="param1"> Nombre d'arbres<BR>
-<input type="number" name ="moy1" id="moy1" value = 1> Nombre de run pour calculer la moyenne <BR>
+<input type="number" name ="pctapp1" required> % sampling of learning<BR>
+<input type="number" name ="param1" id="param1"> trees<BR>
+<input type="number" name ="moy1" id="moy1" value = 1> runs to get average <BR>
 
     </div>
 
@@ -45,14 +45,14 @@ Méthode : <SELECT name="method1" size="1" id="method1" onchange="tree1();"> <OP
 
 <h1>Algo 2 <input type="checkbox" name ="algo2" id="algo2" onClick="required2();"> </h1>
 
-Librairie : <SELECT name="lib2" size="1" id = "lib2"> <OPTION> <OPTION>Weka <OPTION>SparkML <OPTION>Renjin </SELECT><BR>
+Library : <SELECT name="lib2" size="1" id = "lib2"> <OPTION> <OPTION>Weka <OPTION>SparkML <OPTION>Renjin </SELECT><BR>
 
-Méthode : <SELECT name="method2" size="1" id = "method2" onchange="tree2();"> <OPTION> <OPTION>SVM <OPTION>Random forest <OPTION>CART </SELECT><BR>
+Method : <SELECT name="method2" size="1" id = "method2" onchange="tree2();"> <OPTION> <OPTION>SVM <OPTION>Random forest <OPTION>CART </SELECT><BR>
 
 
-<input type="number" name ="pctapp2" id = "pctapp2"> Pourcentage échantillon d'apprentissage<BR>
-<input type="number" name ="param2" id="param2"> Nombre d'arbres<BR>
-<input type="number" name ="moy2" id="moy2" value = 1> Nombre de run pour calculer la moyenne <BR>
+<input type="number" name ="pctapp2" id = "pctapp2"> % sampling of learning<BR>
+<input type="number" name ="param2" id="param2"> trees<BR>
+<input type="number" name ="moy2" id="moy2" value = 1> runs to get average <BR>
 
 
     </div>
@@ -62,14 +62,14 @@ Méthode : <SELECT name="method2" size="1" id = "method2" onchange="tree2();"> <
 
 <h1>Algo 3 <input type="checkbox" name ="algo3" id="algo3" onClick="required3();"></h1>
 
-Librairie : <SELECT name="lib3" size="1" id="lib3"> <OPTION> <OPTION>Weka <OPTION>SparkML <OPTION>Renjin </SELECT><BR>
+Library : <SELECT name="lib3" size="1" id="lib3"> <OPTION> <OPTION>Weka <OPTION>SparkML <OPTION>Renjin </SELECT><BR>
 
-Méthode : <SELECT name="method3" size="1" id="method3" onchange="tree3();"> <OPTION> <OPTION>SVM <OPTION>Random forest <OPTION>CART </SELECT><BR>
+Method : <SELECT name="method3" size="1" id="method3" onchange="tree3();"> <OPTION> <OPTION>SVM <OPTION>Random forest <OPTION>CART </SELECT><BR>
 
 
-<input type="number" name ="pctapp3" id="pctapp3"> Pourcentage échantillon d'apprentissage<BR>
-<input type="number" name ="param3" id="param3"> Nombre d'arbres<BR>
-<input type="number" name ="moy3" id="moy3" value = 1> Nombre de run pour calculer la moyenne <BR>
+<input type="number" name ="pctapp3" id="pctapp3"> % sampling of learning<BR>
+<input type="number" name ="param3" id="param3"> trees<BR>
+<input type="number" name ="moy3" id="moy3" value = 1> runs to get average <BR>
     </div>
 
     </div>

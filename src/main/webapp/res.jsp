@@ -29,11 +29,11 @@ ${lib1}
 <pre></pre>
 ${method1}
 <pre></pre>
-${pct1}% de l'echantillon est l'apprentissage
+${pct1} % sampling of learning
 <pre></pre>
-${moy1} (moyenne)
+${moy1} (runs to get average)
 <pre></pre>
-${tree1} arbres (si random forest)
+${tree1} trees (if random forest)
 <pre></pre>
 Accuracy = ${res1}
 <img src="<%=request.getContextPath()%>${image1}" alt="">
@@ -45,11 +45,11 @@ ${lib2}
 <pre></pre>
 ${method2}
 <pre></pre>
-${pct2}% de l'echantillon est l'apprentissage
+${pct2} % sampling of learning
 <pre></pre>
-${moy2} (moyenne)
+${moy2} (runs to get average)
 <pre></pre>
-${tree2} arbres (si random forest)
+${tree2} trees (if random forest)
 <pre></pre>
 Accuracy = ${res2}
 <img src="<%=request.getContextPath()%>${image2}" alt="">
@@ -61,11 +61,11 @@ ${lib3}
 <pre></pre>
 ${method3}
 <pre></pre>
-${pct3}% de l'echantillon est l'apprentissage
+${pct3} % sampling of learning
 <pre></pre>
-${moy3} (moyenne)
+${moy3} (runs to get average)
 <pre></pre>
-${tree3} arbres (si random forest)
+${tree3} trees (if random forest)
 <pre></pre>
 Accuracy = ${res3}
 <img src="<%=request.getContextPath()%>${image3}" alt="">
